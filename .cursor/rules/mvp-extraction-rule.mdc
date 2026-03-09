@@ -1,0 +1,27 @@
+---
+description: Mapping certain implementations & styles from the mvp-version folder into the current project
+alwaysApply: false
+---
+
+## MVP Extraction Rules
+
+When mapping implementations from the `mvp-version/` folder (React + Tailwind) into the current Angular + SCSS project, follow these rules strictly:
+
+### No Tailwind in Output
+
+- **Never** carry over Tailwind utility classes (`className="..."`) from the MVP components into the Angular project.
+- All visual styling must be written manually as SCSS in the component's corresponding `.scss` file (referenced via `styleUrl` in the Angular component).
+- Translate Tailwind utilities (e.g. `rounded-2xl`, `bg-[--color-primary]`, `flex items-center gap-4`) into their equivalent CSS/SCSS properties.
+- Tailwind theme values (CSS custom properties defined in `mvp-version/src/styles/theme.css`) should be mapped to the project's SCSS variables/partials in `src/shared/styles/`.
+
+### Visual & Behavioral Parity
+
+- The final result **must** be visually identical to the MVP version — colors, spacing, typography, border radii, shadows, gradients, and layout must all match.
+- All animations, transitions, hover effects, focus states, and interactive behaviors present in the MVP must be faithfully reproduced in the Angular version.
+- If the MVP uses CSS custom properties (e.g. `var(--color-primary)`), preserve them or map them to the project's equivalent SCSS variables/custom properties.
+
+### General Mapping Guidance
+
+- Translate React component logic (state, effects, event handlers) into Angular equivalents (signals, lifecycle hooks, event bindings).
+- Preserve the same HTML structure and semantics from the MVP templates.
+- If a component or element originates from a third-party UI library (e.g. shadcn/ui, Radix, Headless UI), **stop the mapping process** and inform me that the functionality needs to be added using an equivalent from [third-party UI library name] — do not attempt to re-implement or introduce those dependencies.
