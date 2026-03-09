@@ -25,3 +25,5 @@ When mapping implementations from the `mvp-version/` folder (React + Tailwind) i
 - Translate React component logic (state, effects, event handlers) into Angular equivalents (signals, lifecycle hooks, event bindings).
 - Preserve the same HTML structure and semantics from the MVP templates.
 - If a component or element originates from a third-party UI library (e.g. shadcn/ui, Radix, Headless UI), **stop the mapping process** and inform me that the functionality needs to be added using an equivalent from [third-party UI library name] — do not attempt to re-implement or introduce those dependencies.
+- Use the `LucideAngularModule` for icons.
+- Use pixels for all measurements instead of rems.

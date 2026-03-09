@@ -1,0 +1,51 @@
+// -- Gradient background --
+$gradient-start: #0f0c29;
+$gradient-mid: #1a1040;
+$gradient-end: #0d1b2a;
+$nav-bg: rgba(15, 12, 41, 0.85);
+
+// -- Primary accent palette --
+$violet-600: #7c3aed;
+$indigo-600: #4f46e5;
+$violet-400: #a78bfa;
+$violet-300: #c4b5fd;
+$blue-400: #60a5fa;
+
+// -- Surfaces --
+$dropdown-bg: #1e1b3a;
+
+// -- Feedback --
+$success: #4ade80;
+$success-dark: #22c55e;
+$error: #f87171;
+$error-dark: #ef4444;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+
+// -- Base --
+$white: #ffffff;
+
+:root {
+  --gradient-start: #{$gradient-start};
+  --gradient-mid: #{$gradient-mid};
+  --gradient-end: #{$gradient-end};
+  --nav-bg: #{$nav-bg};
+
+  --violet-600: #{$violet-600};
+  --indigo-600: #{$indigo-600};
+  --violet-400: #{$violet-400};
+  --violet-300: #{$violet-300};
+  --blue-400: #{$blue-400};
+
+  --dropdown-bg: #{$dropdown-bg};
+
+  --success: #{$success};
+  --success-dark: #{$success-dark};
+  --error: #{$error};
+  --error-dark: #{$error-dark};
+  --gray-400: #{$gray-400};
+  --gray-500: #{$gray-500};
+  body {
+    margin: 0;
+  }
+}
