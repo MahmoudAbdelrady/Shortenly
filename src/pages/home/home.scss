@@ -1,0 +1,292 @@
+@use '../../shared/styles/colors' as *;
+@use '../../shared/styles/mixins' as *;
+
+@keyframes fade-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.home-container {
+  @include flex-col-center;
+  min-height: calc(100vh - 220px);
+  padding: 48px 16px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fade-slide-down 500ms ease both;
+}
+
+.top-title {
+  @include inline-flex-center(8px);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  background: rgba($violet-600, 0.2);
+  border: 1px solid rgba($violet-400, 0.3);
+  color: $violet-300;
+}
+
+.main-title {
+  h3 {
+    color: $white;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    margin: 0 0 12px;
+  }
+
+  p {
+    color: rgba($white, 0.5);
+    font-size: 14px;
+    max-width: 448px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+}
+
+.highlight {
+  display: block;
+  background: linear-gradient(135deg, $violet-400, $blue-400);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 672px;
+  animation: fade-slide-up 500ms ease 100ms both;
+}
+
+.url-form {
+  @include flex-col(20px);
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba($white, 0.04);
+  border: 1px solid rgba($white, 0.1);
+  backdrop-filter: blur(16px);
+
+  @media (min-width: 640px) {
+    padding: 32px;
+  }
+}
+
+.input-field {
+  @include flex-col(8px);
+
+  span {
+    color: rgba($white, 0.7);
+    font-size: 14px;
+  }
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  > lucide-icon {
+    position: absolute;
+    left: 16px;
+    color: rgba($white, 0.3);
+  }
+
+  input {
+    padding-left: 44px;
+  }
+}
+
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba($white, 0.06);
+  border: 1px solid rgba($white, 0.1);
+  color: $white;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  @include transition-default;
+
+  &::placeholder {
+    color: rgba($white, 0.25);
+  }
+
+  &:focus {
+    border-color: rgba($violet-400, 0.5);
+  }
+}
+
+.dropdown-wrapper {
+  position: relative;
+}
+
+.dropdown-trigger {
+  @include flex-between;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba($white, 0.06);
+  border: 1px solid rgba($white, 0.1);
+  color: $white;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  @include transition-default;
+
+  &.open {
+    border-color: rgba($violet-400, 0.5);
+  }
+}
+
+.trigger-content {
+  @include flex-row(8px);
+
+  lucide-icon {
+    color: $violet-400;
+  }
+}
+
+.chevron {
+  color: rgba($white, 0.4);
+  transition: transform 200ms ease;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown-panel {
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  margin-top: 8px;
+  padding: 0;
+  list-style: none;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 224px;
+  overflow-y: auto;
+  background: $dropdown-bg;
+  border: 1px solid rgba($white, 0.12);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: dropdown-open 150ms ease both;
+}
+
+@keyframes dropdown-open {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdown-option {
+  @include flex-row(12px);
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: rgba($white, 0.75);
+  cursor: pointer;
+  box-sizing: border-box;
+  @include transition-default(150ms);
+
+  lucide-icon {
+    color: rgba($violet-400, 0.7);
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: rgba($white, 0.05);
+  }
+
+  &[aria-selected='true'] {
+    color: $violet-400;
+    background: rgba($violet-600, 0.15);
+
+    lucide-icon {
+      color: $violet-400;
+    }
+  }
+}
+
+button[type='submit'] {
+  @include flex-center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  color: $white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: linear-gradient(135deg, $violet-600, $indigo-600);
+  box-shadow: 0 4px 20px rgba($violet-600, 0.4);
+  @include transition-default;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.footer {
+  @include flex-row(32px);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 40px;
+  text-align: center;
+  animation: fade-in 500ms ease 300ms both;
+}
+
+.footer-item {
+  @include flex-col(4px);
+
+  h5 {
+    color: $violet-400;
+    font-weight: 700;
+    font-size: 18px;
+    margin: 0;
+  }
+
+  p {
+    color: rgba($white, 0.3);
+    font-size: 12px;
+    margin: 0;
+  }
+}

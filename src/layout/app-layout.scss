@@ -17,7 +17,10 @@
   top: 0;
   z-index: 50;
   height: 4rem;
-  padding: 0 30rem;
+  padding: 0 max(16px, calc((100% - 1152px) / 2));
+  @media (min-width: 640px) {
+    padding: 0 max(24px, calc((100% - 1152px) / 2));
+  }
   border-bottom: 1px solid rgba($white, 0.1);
   backdrop-filter: blur(12px);
   background: $nav-bg;
