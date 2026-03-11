@@ -13,8 +13,11 @@
     </div>
   </div>
   <div class="content">
-    <shorten-form></shorten-form>
-    <!-- <shorten-result></shorten-result> -->
+    @if (showResult()) {
+      <shorten-result (onShortenAnother)="onShortenResult()"></shorten-result>
+    } @else {
+      <shorten-form (onShorten)="onShorten()"></shorten-form>
+    }
   </div>
   <div class="footer">
     <div class="footer-item">

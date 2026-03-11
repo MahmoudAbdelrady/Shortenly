@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { Check, Copy, Infinity, LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -11,4 +11,11 @@ export class ShortenResult {
   protected readonly CheckIcon = Check;
   protected readonly CopyIcon = Copy;
   protected readonly InfinityIcon = Infinity;
+
+  public onShortenAnother = output<void>();
+
+  protected onShortenAnotherClick(event: Event) {
+    event.preventDefault();
+    this.onShortenAnother.emit();
+  }
 }

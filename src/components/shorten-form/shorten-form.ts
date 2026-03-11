@@ -1,4 +1,12 @@
-import { Component, computed, ElementRef, HostListener, inject, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  ElementRef,
+  HostListener,
+  inject,
+  output,
+  signal,
+} from '@angular/core';
 import { CdkListboxModule, ListboxValueChangeEvent } from '@angular/cdk/listbox';
 import {
   ArrowRight,
@@ -57,6 +65,8 @@ export class ShortenForm {
       this.expiryDurationOptions[0],
   );
 
+  public onShorten = output<void>();
+
   @HostListener('document:click', ['$event.target'])
   onClickOutside(target: EventTarget | null) {
     if (!(target instanceof HTMLElement)) return;
@@ -73,5 +83,10 @@ export class ShortenForm {
   onOptionSelect(event: ListboxValueChangeEvent<number>) {
     this.selectedValue.set(event.value[0]);
     this.dropdownOpen.set(false);
+  }
+
+  onSubmit(event: Event) {
+    event.preventDefault();
+    this.onShorten.emit();
   }
 }
