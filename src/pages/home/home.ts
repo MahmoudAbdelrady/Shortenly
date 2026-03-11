@@ -6,11 +6,13 @@ import {
   Clock,
   Infinity,
   Link2,
+  Check,
   LucideAngularModule,
   LucideIconData,
   Sparkles,
   Ticket,
   Zap,
+  Copy,
 } from 'lucide-angular';
 
 interface ExpiryDurationOption {
@@ -33,6 +35,9 @@ export class HomeComponent {
   protected readonly ZapIcon = Zap;
   protected readonly ChevronDownIcon = ChevronDown;
   protected readonly LinkIcon = Link2;
+  protected readonly CheckIcon = Check;
+  protected readonly CopyIcon = Copy;
+  protected readonly InfinityIcon = Infinity;
 
   protected readonly expiryDurationOptions: ExpiryDurationOption[] = [
     { icon: Ticket, label: 'One time', value: 0 },

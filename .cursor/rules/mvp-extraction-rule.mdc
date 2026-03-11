@@ -27,3 +27,5 @@ When mapping implementations from the `mvp-version/` folder (React + Tailwind) i
 - If a component or element originates from a third-party UI library (e.g. shadcn/ui, Radix, Headless UI), **stop the mapping process** and inform me that the functionality needs to be added using an equivalent from [third-party UI library name] — do not attempt to re-implement or introduce those dependencies.
 - Use the `LucideAngularModule` for icons.
 - Use pixels for all measurements instead of rems.
+- The Angular project may have a different html structure than the MVP project, but the styling should be the same.
+- If a certain styling in the MVP is not possible to achieve with an html structure in the Angular project and this html structure is different from the MVP, then use the closest possible html structure from the MVP in the Angular project to achieve the same styling.

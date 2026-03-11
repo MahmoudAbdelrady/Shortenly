@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="content">
-    <form class="url-form">
+    <!-- <form class="url-form">
       <div class="input-field">
         <span>Your long URL</span>
         <div class="input-with-icon">
@@ -63,7 +63,47 @@
         Shorten URL
         <lucide-icon [img]="ArrowRightIcon" [size]="16"></lucide-icon>
       </button>
-    </form>
+    </form> -->
+    <div class="shorten-result">
+      <div class="header">
+        <div class="h-icon">
+          <lucide-icon [img]="CheckIcon" [size]="20"></lucide-icon>
+        </div>
+        <div class="h-info">
+          <h5>URL Shortened Successfully!</h5>
+          <p>Your link is ready to share</p>
+        </div>
+      </div>
+      <div class="content">
+        <div class="url-info">
+          <span>Short URL</span>
+          <div class="url-value">
+            <span>https://snip.ly/vtBpRa</span>
+            <button type="button" class="copy-btn">
+              <lucide-icon [img]="CopyIcon" [size]="16"></lucide-icon>
+              Copy
+            </button>
+          </div>
+        </div>
+        <div class="url-info">
+          <span>Original URL</span>
+          <div class="url-value">
+            <span>https://example.com/very/long/url/that/needs/shortening</span>
+          </div>
+        </div>
+        <div class="url-tags">
+          <div class="tag-item">
+            <span class="tag-icon"
+              ><lucide-icon [img]="InfinityIcon" [size]="12"></lucide-icon
+            ></span>
+            <span class="tag-label">Never expires</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <button type="button" class="shorten-btn">Shorten Another</button>
+      </div>
+    </div>
   </div>
   <div class="footer">
     <div class="footer-item">
