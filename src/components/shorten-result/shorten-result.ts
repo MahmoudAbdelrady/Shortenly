@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
+import { Check, Copy, Infinity, LucideAngularModule } from 'lucide-angular';
 
 @Component({
-  selector: 'app-shorten-result',
-  imports: [],
-  templateUrl: './shorten-result.html',
-  styleUrl: './shorten-result.scss',
+  selector: 'shorten-result',
+  imports: [LucideAngularModule],
+  templateUrl: 'shorten-result.html',
+  styleUrl: 'shorten-result.scss',
 })
 export class ShortenResult {
-
+  protected readonly CheckIcon = Check;
+  protected readonly CopyIcon = Copy;
+  protected readonly InfinityIcon = Infinity;
 }
