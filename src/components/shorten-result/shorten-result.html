@@ -12,10 +12,15 @@
     <div class="url-info">
       <span>Short URL</span>
       <div class="url-value">
-        <span>https://snip.ly/vtBpRa</span>
-        <button type="button" class="copy-btn">
-          <lucide-icon [img]="CopyIcon" [size]="16"></lucide-icon>
-          Copy
+        <span>{{ shortUrl() }}</span>
+        <button type="button" class="copy-btn" [class.copied]="copied()" (click)="onCopyClick($event)">
+          @if (copied()) {
+            <lucide-icon [img]="CheckIcon" [size]="16"></lucide-icon>
+            Copied!
+          } @else {
+            <lucide-icon [img]="CopyIcon" [size]="16"></lucide-icon>
+            Copy
+          }
         </button>
       </div>
     </div>

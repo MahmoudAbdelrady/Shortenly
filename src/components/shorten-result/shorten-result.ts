@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { Check, Copy, Infinity, LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -12,10 +12,20 @@ export class ShortenResult {
   protected readonly CopyIcon = Copy;
   protected readonly InfinityIcon = Infinity;
 
+  protected shortUrl = signal('https://snip.ly/vtBpRa');
   public onShortenAnother = output<void>();
 
   protected onShortenAnotherClick(event: Event) {
     event.preventDefault();
     this.onShortenAnother.emit();
+  }
+
+  protected readonly copied = signal(false);
+
+  protected async onCopyClick(event: Event) {
+    event.preventDefault();
+    await navigator.clipboard.writeText(this.shortUrl());
+    this.copied.set(true);
+    setTimeout(() => this.copied.set(false), 2000);
   }
 }

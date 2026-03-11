@@ -102,6 +102,12 @@
       color: $violet-400;
       cursor: pointer;
       @include transition-default;
+
+      &.copied {
+        background: rgba($success-dark, 0.15);
+        border-color: rgba($success-dark, 0.3);
+        color: $success;
+      }
     }
 
     .url-tags {
