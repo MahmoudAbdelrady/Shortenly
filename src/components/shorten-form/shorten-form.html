@@ -1,4 +1,4 @@
-<form class="url-form">
+<form class="url-form" (submit)="onSubmit($event)">
   <div class="input-field">
     <span>Your long URL</span>
     <div class="input-with-icon">
@@ -8,7 +8,7 @@
   </div>
   <div class="input-field">
     <span>Expiry duration</span>
-    <div class="dropdown-wrapper">
+    <div class="dropdown-wrapper" #dropdownWrapper>
       <button
         type="button"
         class="dropdown-trigger"
@@ -43,7 +43,7 @@
       }
     </div>
   </div>
-  <button type="submit" (click)="onSubmit($event)">
+  <button type="submit">
     <lucide-icon [img]="ZapIcon" [size]="16"></lucide-icon>
     Shorten URL
     <lucide-icon [img]="ArrowRightIcon" [size]="16"></lucide-icon>

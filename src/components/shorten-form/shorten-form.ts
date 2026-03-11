@@ -3,9 +3,9 @@ import {
   computed,
   ElementRef,
   HostListener,
-  inject,
   output,
   signal,
+  viewChild,
 } from '@angular/core';
 import { CdkListboxModule, ListboxValueChangeEvent } from '@angular/cdk/listbox';
 import {
@@ -33,7 +33,7 @@ interface ExpiryDurationOption {
   styleUrl: 'shorten-form.scss',
 })
 export class ShortenForm {
-  private elementRef = inject(ElementRef);
+  private dropdownWrapper = viewChild<ElementRef<HTMLElement>>('dropdownWrapper');
 
   protected readonly ArrowRightIcon = ArrowRight;
   protected readonly ZapIcon = Zap;
@@ -69,8 +69,8 @@ export class ShortenForm {
 
   @HostListener('document:click', ['$event.target'])
   onClickOutside(target: EventTarget | null) {
-    if (!(target instanceof HTMLElement)) return;
-    const wrapper = this.elementRef.nativeElement.querySelector('.dropdown-wrapper');
+    if (!this.dropdownOpen() || !(target instanceof HTMLElement)) return;
+    const wrapper = this.dropdownWrapper()?.nativeElement;
     if (wrapper && !wrapper.contains(target)) {
       this.dropdownOpen.set(false);
     }
