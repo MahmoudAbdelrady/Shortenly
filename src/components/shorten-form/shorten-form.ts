@@ -41,6 +41,18 @@ interface ShortenFormData {
   expiryDuration: string;
 }
 
+function urlValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) {
+    return null;
+  }
+  try {
+    new URL(control.value);
+    return null;
+  } catch {
+    return { invalidUrl: true };
+  }
+}
+
 @Component({
   selector: 'shorten-form',
   imports: [LucideAngularModule, CdkListboxModule, FormError, ReactiveFormsModule],
@@ -51,7 +63,7 @@ export class ShortenForm {
   private dropdownWrapper = viewChild<ElementRef<HTMLElement>>('dropdownWrapper');
   private formBuilder = inject(FormBuilder);
   protected urlShortenForm = this.formBuilder.group({
-    longUrl: ['', [Validators.required, this.urlValidator]],
+    longUrl: ['', [Validators.required, urlValidator]],
     expiryDuration: ['ONE_TIME', [Validators.required]],
   });
 
@@ -89,18 +101,6 @@ export class ShortenForm {
   );
 
   public shorten = output<ShortenFormData>();
-
-  private urlValidator(control: AbstractControl): ValidationErrors | null {
-    if (!control.value) {
-      return null;
-    }
-    try {
-      new URL(control.value);
-      return null;
-    } catch {
-      return { invalidUrl: true };
-    }
-  }
 
   @HostListener('document:click', ['$event.target'])
   protected onClickOutside(target: EventTarget | null) {
