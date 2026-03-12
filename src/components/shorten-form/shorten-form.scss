@@ -1,0 +1,81 @@
+@use '../../shared/styles/colors' as *;
+@use '../../shared/styles/mixins' as *;
+
+.url-form {
+  @include flex-col(20px);
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba($white, 0.04);
+  border: 1px solid rgba($white, 0.1);
+  backdrop-filter: blur(16px);
+
+  @media (min-width: 640px) {
+    padding: 32px;
+  }
+}
+
+.input-field {
+  @include flex-col(8px);
+
+  span {
+    color: rgba($white, 0.7);
+    font-size: 14px;
+  }
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  > lucide-icon {
+    position: absolute;
+    left: 16px;
+    color: rgba($white, 0.3);
+  }
+
+  input {
+    padding-left: 44px;
+  }
+}
+
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba($white, 0.06);
+  border: 1px solid rgba($white, 0.1);
+  color: $white;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  @include transition-default;
+
+  &::placeholder {
+    color: rgba($white, 0.25);
+  }
+
+  &:focus {
+    border-color: rgba($violet-400, 0.5);
+  }
+}
+
+button[type='submit'] {
+  @include flex-center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  color: $white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: linear-gradient(135deg, $violet-600, $indigo-600);
+  box-shadow: 0 4px 20px rgba($violet-600, 0.4);
+  @include transition-default;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}

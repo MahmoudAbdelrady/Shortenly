@@ -1,0 +1,40 @@
+<div class="dropdown-wrapper" #dropdownWrapper (keydown.escape)="dropdownOpen.set(false)">
+  <button
+    type="button"
+    class="dropdown-trigger"
+    [class.open]="dropdownOpen()"
+    (click)="toggleDropdown()"
+  >
+    <div class="trigger-content">
+      @if (selectedOption().icon) {
+        <lucide-icon [img]="selectedOption().icon" [size]="16"></lucide-icon>
+      } @else if (fieldValueDefaultIcon()) {
+        <lucide-icon [img]="fieldValueDefaultIcon()" [size]="16"></lucide-icon>
+      }
+      <span>{{ selectedOption().label }}</span>
+    </div>
+    <lucide-icon
+      [img]="ChevronDownIcon"
+      [size]="16"
+      class="chevron"
+      [class.open]="dropdownOpen()"
+    ></lucide-icon>
+  </button>
+  @if (dropdownOpen()) {
+    <ul
+      class="dropdown-panel"
+      cdkListbox
+      [cdkListboxValue]="[fieldValue()]"
+      (cdkListboxValueChange)="onOptionSelect($event)"
+    >
+      @for (option of items(); track option.value) {
+        <li [cdkOption]="option.value" class="dropdown-option">
+          @if (option.icon) {
+            <lucide-icon [img]="option.icon" [size]="16"></lucide-icon>
+          }
+          <span>{{ option.label }}</span>
+        </li>
+      }
+    </ul>
+  }
+</div>

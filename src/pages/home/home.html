@@ -1,0 +1,36 @@
+<div class="home-container">
+  <div class="header">
+    <div class="top-title">
+      <lucide-icon [img]="SparklesIcon" [size]="16"></lucide-icon>
+      <span>Fast & Simple URL Shortener</span>
+    </div>
+    <div class="main-title">
+      <h3>Shorten any URL<br /><span class="highlight">in seconds</span></h3>
+      <p>
+        Paste your long URL below and get a clean, shareable short link with optional expiry
+        control.
+      </p>
+    </div>
+  </div>
+  <div class="content">
+    @if (showResult()) {
+      <shorten-result (onShortenAnother)="onShortenResult()"></shorten-result>
+    } @else {
+      <shorten-form (shorten)="onShorten()"></shorten-form>
+    }
+  </div>
+  <div class="footer">
+    <div class="footer-item">
+      <h5>Instant</h5>
+      <p>No sign-up needed</p>
+    </div>
+    <div class="footer-item">
+      <h5>5-min</h5>
+      <p>Interval options</p>
+    </div>
+    <div class="footer-item">
+      <h5>∞</h5>
+      <p>Never-expire option</p>
+    </div>
+  </div>
+</div>
