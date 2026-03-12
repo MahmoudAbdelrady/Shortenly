@@ -16,7 +16,7 @@
     @if (showResult()) {
       <shorten-result (onShortenAnother)="onShortenResult()"></shorten-result>
     } @else {
-      <shorten-form (onShorten)="onShorten()"></shorten-form>
+      <shorten-form (shorten)="onShorten()"></shorten-form>
     }
   </div>
   <div class="footer">

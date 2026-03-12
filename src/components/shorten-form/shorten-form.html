@@ -17,7 +17,7 @@
   </div>
   <div class="input-field">
     <span>Expiry duration</span>
-    <div class="dropdown-wrapper" #dropdownWrapper>
+    <div class="dropdown-wrapper" #dropdownWrapper (keydown.escape)="dropdownOpen.set(false)">
       <button
         type="button"
         class="dropdown-trigger"
@@ -39,7 +39,6 @@
         <ul
           class="dropdown-panel"
           cdkListbox
-          formControlName="expiryDuration"
           [cdkListboxValue]="[urlShortenForm.value.expiryDuration]"
           (cdkListboxValueChange)="onOptionSelect($event)"
         >
@@ -50,12 +49,12 @@
             </li>
           }
         </ul>
-        <form-error
-          [field]="urlShortenForm.controls.expiryDuration"
-          [fieldName]="'expiryDuration'"
-          [errorMessages]="{ required: 'Expiry duration is required' }"
-        />
       }
+      <form-error
+        [field]="urlShortenForm.controls.expiryDuration"
+        [fieldName]="'expiryDuration'"
+        [errorMessages]="{ required: 'Expiry duration is required' }"
+      />
     </div>
   </div>
   <button type="submit">

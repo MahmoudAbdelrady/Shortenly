@@ -88,19 +88,22 @@ export class ShortenForm {
       ) ?? this.expiryDurationOptions[0],
   );
 
-  public onShorten = output<ShortenFormData>();
+  public shorten = output<ShortenFormData>();
 
   private urlValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) {
       return null;
     }
-    const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
-    const isValid = urlRegex.test(control.value);
-    return isValid ? null : { invalidUrl: true };
+    try {
+      new URL(control.value);
+      return null;
+    } catch {
+      return { invalidUrl: true };
+    }
   }
 
   @HostListener('document:click', ['$event.target'])
-  onClickOutside(target: EventTarget | null) {
+  protected onClickOutside(target: EventTarget | null) {
     if (!this.dropdownOpen() || !(target instanceof HTMLElement)) return;
     const wrapper = this.dropdownWrapper()?.nativeElement;
     if (wrapper && !wrapper.contains(target)) {
@@ -108,11 +111,11 @@ export class ShortenForm {
     }
   }
 
-  toggleDropdown() {
+  protected toggleDropdown() {
     this.dropdownOpen.update((v) => !v);
   }
 
-  onOptionSelect(event: ListboxValueChangeEvent<string | null | undefined>) {
+  protected onOptionSelect(event: ListboxValueChangeEvent<string | null | undefined>) {
     const value = event.value[0];
     if (value) {
       this.urlShortenForm.patchValue({ expiryDuration: value });
@@ -120,14 +123,13 @@ export class ShortenForm {
     this.dropdownOpen.set(false);
   }
 
-  onSubmit() {
+  protected onSubmit() {
     this.urlShortenForm.markAllAsTouched();
     if (this.urlShortenForm.invalid) return;
     const formData: ShortenFormData = {
       longUrl: this.urlShortenForm.value.longUrl ?? '',
       expiryDuration: this.urlShortenForm.value.expiryDuration ?? 'ONE_TIME',
     };
-    console.log({ formData });
-    this.onShorten.emit(formData);
+    this.shorten.emit(formData);
   }
 }
