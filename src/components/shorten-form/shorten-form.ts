@@ -1,22 +1,10 @@
-import {
-  Component,
-  computed,
-  ElementRef,
-  HostListener,
-  inject,
-  output,
-  signal,
-  viewChild,
-} from '@angular/core';
-import { CdkListboxModule, ListboxValueChangeEvent } from '@angular/cdk/listbox';
+import { Component, inject, output } from '@angular/core';
 import {
   ArrowRight,
-  ChevronDown,
   Clock,
   Infinity,
   Link2,
   LucideAngularModule,
-  LucideIconData,
   Ticket,
   Zap,
 } from 'lucide-angular';
@@ -28,13 +16,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { FormError } from '../form-error/form-error';
-import { toSignal } from '@angular/core/rxjs-interop';
-
-interface ExpiryDurationOption {
-  icon: LucideIconData;
-  label: string;
-  value: string;
-}
+import { CustomDropdown } from '../custom-dropdown/custom-dropdown';
+import { DropdownOption } from '../../shared/types/general';
 
 interface ShortenFormData {
   longUrl: string;
@@ -55,12 +38,11 @@ function urlValidator(control: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'shorten-form',
-  imports: [LucideAngularModule, CdkListboxModule, FormError, ReactiveFormsModule],
+  imports: [LucideAngularModule, CustomDropdown, FormError, ReactiveFormsModule],
   templateUrl: 'shorten-form.html',
   styleUrl: 'shorten-form.scss',
 })
 export class ShortenForm {
-  private dropdownWrapper = viewChild<ElementRef<HTMLElement>>('dropdownWrapper');
   private formBuilder = inject(FormBuilder);
   protected urlShortenForm = this.formBuilder.group({
     longUrl: ['', [Validators.required, urlValidator]],
@@ -69,10 +51,9 @@ export class ShortenForm {
 
   protected readonly ArrowRightIcon = ArrowRight;
   protected readonly ZapIcon = Zap;
-  protected readonly ChevronDownIcon = ChevronDown;
   protected readonly LinkIcon = Link2;
 
-  protected readonly expiryDurationOptions: ExpiryDurationOption[] = [
+  protected readonly expiryDurationOptions: DropdownOption[] = [
     { icon: Ticket, label: 'One time', value: 'ONE_TIME' },
     { icon: Infinity, label: 'Never expires', value: 'NEVER_EXPIRES' },
     { icon: Clock, label: '5 min', value: '5_MIN' },
@@ -89,38 +70,10 @@ export class ShortenForm {
     { icon: Clock, label: '24 hrs', value: '24_HR' },
   ];
 
-  private readonly urlShortenerFormValue = toSignal(this.urlShortenForm.valueChanges, {
-    initialValue: this.urlShortenForm.value,
-  });
-  protected readonly dropdownOpen = signal(false);
-  protected readonly selectedOption = computed(
-    () =>
-      this.expiryDurationOptions.find(
-        (o) => o.value === this.urlShortenerFormValue().expiryDuration,
-      ) ?? this.expiryDurationOptions[0],
-  );
-
   public shorten = output<ShortenFormData>();
 
-  @HostListener('document:click', ['$event.target'])
-  protected onClickOutside(target: EventTarget | null) {
-    if (!this.dropdownOpen() || !(target instanceof HTMLElement)) return;
-    const wrapper = this.dropdownWrapper()?.nativeElement;
-    if (wrapper && !wrapper.contains(target)) {
-      this.dropdownOpen.set(false);
-    }
-  }
-
-  protected toggleDropdown() {
-    this.dropdownOpen.update((v) => !v);
-  }
-
-  protected onOptionSelect(event: ListboxValueChangeEvent<string | null | undefined>) {
-    const value = event.value[0];
-    if (value) {
-      this.urlShortenForm.patchValue({ expiryDuration: value });
-    }
-    this.dropdownOpen.set(false);
+  protected onExpiryDurationChange(value: string) {
+    this.urlShortenForm.patchValue({ expiryDuration: value });
   }
 
   protected onSubmit() {

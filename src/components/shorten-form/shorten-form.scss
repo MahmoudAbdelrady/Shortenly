@@ -1,17 +1,6 @@
 @use '../../shared/styles/colors' as *;
 @use '../../shared/styles/mixins' as *;
 
-@keyframes dropdown-open {
-  from {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 .url-form {
   @include flex-col(20px);
   padding: 24px;
@@ -68,91 +57,6 @@ input {
 
   &:focus {
     border-color: rgba($violet-400, 0.5);
-  }
-}
-
-.dropdown-wrapper {
-  position: relative;
-}
-
-.dropdown-trigger {
-  @include flex-between;
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: rgba($white, 0.06);
-  border: 1px solid rgba($white, 0.1);
-  color: $white;
-  font-size: 14px;
-  cursor: pointer;
-  outline: none;
-  @include transition-default;
-
-  &.open {
-    border-color: rgba($violet-400, 0.5);
-  }
-}
-
-.trigger-content {
-  @include flex-row(8px);
-
-  lucide-icon {
-    color: $violet-400;
-  }
-}
-
-.chevron {
-  color: rgba($white, 0.4);
-  transition: transform 200ms ease;
-
-  &.open {
-    transform: rotate(180deg);
-  }
-}
-
-.dropdown-panel {
-  position: absolute;
-  z-index: 1000;
-  width: 100%;
-  margin-top: 8px;
-  padding: 0;
-  list-style: none;
-  border-radius: 12px;
-  overflow: hidden;
-  max-height: 224px;
-  overflow-y: auto;
-  background: $dropdown-bg;
-  border: 1px solid rgba($white, 0.12);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  animation: dropdown-open 150ms ease both;
-}
-
-.dropdown-option {
-  @include flex-row(12px);
-  width: 100%;
-  padding: 10px 16px;
-  font-size: 14px;
-  color: rgba($white, 0.75);
-  cursor: pointer;
-  box-sizing: border-box;
-  @include transition-default(150ms);
-
-  lucide-icon {
-    color: rgba($violet-400, 0.7);
-    flex-shrink: 0;
-  }
-
-  &:hover {
-    background: rgba($white, 0.05);
-  }
-
-  &[aria-selected='true'] {
-    color: $violet-400;
-    background: rgba($violet-600, 0.15);
-
-    lucide-icon {
-      color: $violet-400;
-    }
   }
 }
 
