@@ -3,6 +3,7 @@ import {
   computed,
   ElementRef,
   HostListener,
+  inject,
   output,
   signal,
   viewChild,
@@ -19,21 +20,40 @@ import {
   Ticket,
   Zap,
 } from 'lucide-angular';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+import { FormError } from '../form-error/form-error';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 interface ExpiryDurationOption {
   icon: LucideIconData;
   label: string;
-  value: number;
+  value: string;
+}
+
+interface ShortenFormData {
+  longUrl: string;
+  expiryDuration: string;
 }
 
 @Component({
   selector: 'shorten-form',
-  imports: [LucideAngularModule, CdkListboxModule],
+  imports: [LucideAngularModule, CdkListboxModule, FormError, ReactiveFormsModule],
   templateUrl: 'shorten-form.html',
   styleUrl: 'shorten-form.scss',
 })
 export class ShortenForm {
   private dropdownWrapper = viewChild<ElementRef<HTMLElement>>('dropdownWrapper');
+  private formBuilder = inject(FormBuilder);
+  protected urlShortenForm = this.formBuilder.group({
+    longUrl: ['', [Validators.required, this.urlValidator]],
+    expiryDuration: ['ONE_TIME', [Validators.required]],
+  });
 
   protected readonly ArrowRightIcon = ArrowRight;
   protected readonly ZapIcon = Zap;
@@ -41,31 +61,43 @@ export class ShortenForm {
   protected readonly LinkIcon = Link2;
 
   protected readonly expiryDurationOptions: ExpiryDurationOption[] = [
-    { icon: Ticket, label: 'One time', value: 0 },
-    { icon: Infinity, label: 'Never expires', value: -1 },
-    { icon: Clock, label: '5 min', value: 5 * 60 * 1000 },
-    { icon: Clock, label: '10 min', value: 10 * 60 * 1000 },
-    { icon: Clock, label: '15 min', value: 15 * 60 * 1000 },
-    { icon: Clock, label: '20 min', value: 20 * 60 * 1000 },
-    { icon: Clock, label: '25 min', value: 25 * 60 * 1000 },
-    { icon: Clock, label: '30 min', value: 30 * 60 * 1000 },
-    { icon: Clock, label: '45 min', value: 45 * 60 * 1000 },
-    { icon: Clock, label: '1 hr', value: 60 * 60 * 1000 },
-    { icon: Clock, label: '2 hrs', value: 2 * 60 * 60 * 1000 },
-    { icon: Clock, label: '6 hrs', value: 6 * 60 * 60 * 1000 },
-    { icon: Clock, label: '12 hrs', value: 12 * 60 * 60 * 1000 },
-    { icon: Clock, label: '24 hrs', value: 24 * 60 * 60 * 1000 },
+    { icon: Ticket, label: 'One time', value: 'ONE_TIME' },
+    { icon: Infinity, label: 'Never expires', value: 'NEVER_EXPIRES' },
+    { icon: Clock, label: '5 min', value: '5_MIN' },
+    { icon: Clock, label: '10 min', value: '10_MIN' },
+    { icon: Clock, label: '15 min', value: '15_MIN' },
+    { icon: Clock, label: '20 min', value: '20_MIN' },
+    { icon: Clock, label: '25 min', value: '25_MIN' },
+    { icon: Clock, label: '30 min', value: '30_MIN' },
+    { icon: Clock, label: '45 min', value: '45_MIN' },
+    { icon: Clock, label: '1 hr', value: '1_HR' },
+    { icon: Clock, label: '2 hrs', value: '2_HR' },
+    { icon: Clock, label: '6 hrs', value: '6_HR' },
+    { icon: Clock, label: '12 hrs', value: '12_HR' },
+    { icon: Clock, label: '24 hrs', value: '24_HR' },
   ];
 
+  private readonly urlShortenerFormValue = toSignal(this.urlShortenForm.valueChanges, {
+    initialValue: this.urlShortenForm.value,
+  });
   protected readonly dropdownOpen = signal(false);
-  protected readonly selectedValue = signal(0);
   protected readonly selectedOption = computed(
     () =>
-      this.expiryDurationOptions.find((o) => o.value === this.selectedValue()) ??
-      this.expiryDurationOptions[0],
+      this.expiryDurationOptions.find(
+        (o) => o.value === this.urlShortenerFormValue().expiryDuration,
+      ) ?? this.expiryDurationOptions[0],
   );
 
-  public onShorten = output<void>();
+  public onShorten = output<ShortenFormData>();
+
+  private urlValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+    const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+    const isValid = urlRegex.test(control.value);
+    return isValid ? null : { invalidUrl: true };
+  }
 
   @HostListener('document:click', ['$event.target'])
   onClickOutside(target: EventTarget | null) {
@@ -80,13 +112,22 @@ export class ShortenForm {
     this.dropdownOpen.update((v) => !v);
   }
 
-  onOptionSelect(event: ListboxValueChangeEvent<number>) {
-    this.selectedValue.set(event.value[0]);
+  onOptionSelect(event: ListboxValueChangeEvent<string | null | undefined>) {
+    const value = event.value[0];
+    if (value) {
+      this.urlShortenForm.patchValue({ expiryDuration: value });
+    }
     this.dropdownOpen.set(false);
   }
 
-  onSubmit(event: Event) {
-    event.preventDefault();
-    this.onShorten.emit();
+  onSubmit() {
+    this.urlShortenForm.markAllAsTouched();
+    if (this.urlShortenForm.invalid) return;
+    const formData: ShortenFormData = {
+      longUrl: this.urlShortenForm.value.longUrl ?? '',
+      expiryDuration: this.urlShortenForm.value.expiryDuration ?? 'ONE_TIME',
+    };
+    console.log({ formData });
+    this.onShorten.emit(formData);
   }
 }

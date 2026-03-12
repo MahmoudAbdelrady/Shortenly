@@ -1,0 +1,11 @@
+<div class="form-error-container">
+  @if (field().invalid && (field().dirty || field().touched)) {
+    <ul class="error-list">
+      @for (error of errorMessages() | keyvalue; track error.key) {
+        @if (field().hasError(error.key)) {
+          <li>{{ error.value }}</li>
+        }
+      }
+    </ul>
+  }
+</div>

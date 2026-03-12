@@ -1,10 +1,19 @@
-<form class="url-form" (submit)="onSubmit($event)">
+<form class="url-form" [formGroup]="urlShortenForm" (ngSubmit)="onSubmit()">
   <div class="input-field">
     <span>Your long URL</span>
     <div class="input-with-icon">
       <lucide-icon [img]="LinkIcon" [size]="16"></lucide-icon>
-      <input type="text" placeholder="https://example.com/very/long/url/that/needs/shortening" />
+      <input
+        type="text"
+        placeholder="https://example.com/very/long/url/that/needs/shortening"
+        formControlName="longUrl"
+      />
     </div>
+    <form-error
+      [field]="urlShortenForm.controls.longUrl"
+      [fieldName]="'longUrl'"
+      [errorMessages]="{ required: 'URL is required', invalidUrl: 'Enter a valid URL' }"
+    />
   </div>
   <div class="input-field">
     <span>Expiry duration</span>
@@ -30,7 +39,8 @@
         <ul
           class="dropdown-panel"
           cdkListbox
-          [cdkListboxValue]="[selectedValue()]"
+          formControlName="expiryDuration"
+          [cdkListboxValue]="[urlShortenForm.value.expiryDuration]"
           (cdkListboxValueChange)="onOptionSelect($event)"
         >
           @for (option of expiryDurationOptions; track option.value) {
@@ -40,6 +50,11 @@
             </li>
           }
         </ul>
+        <form-error
+          [field]="urlShortenForm.controls.expiryDuration"
+          [fieldName]="'expiryDuration'"
+          [errorMessages]="{ required: 'Expiry duration is required' }"
+        />
       }
     </div>
   </div>
