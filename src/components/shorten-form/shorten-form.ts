@@ -1,13 +1,5 @@
 import { Component, inject, output } from '@angular/core';
-import {
-  ArrowRight,
-  Clock,
-  Infinity,
-  Link2,
-  LucideAngularModule,
-  Ticket,
-  Zap,
-} from 'lucide-angular';
+import { ArrowRight, Link2, LucideAngularModule, Zap } from 'lucide-angular';
 import {
   AbstractControl,
   FormBuilder,
@@ -17,7 +9,7 @@ import {
 } from '@angular/forms';
 import { FormError } from '../form-error/form-error';
 import { CustomDropdown } from '../custom-dropdown/custom-dropdown';
-import { DropdownOption } from '../../shared/types/general';
+import { expiryDurationOptions } from '../../shared/types/general';
 
 interface ShortenFormData {
   longUrl: string;
@@ -52,23 +44,7 @@ export class ShortenForm {
   protected readonly ArrowRightIcon = ArrowRight;
   protected readonly ZapIcon = Zap;
   protected readonly LinkIcon = Link2;
-
-  protected readonly expiryDurationOptions: DropdownOption[] = [
-    { icon: Ticket, label: 'One time', value: 'ONE_TIME' },
-    { icon: Infinity, label: 'Never expires', value: 'NEVER_EXPIRES' },
-    { icon: Clock, label: '5 min', value: '5_MIN' },
-    { icon: Clock, label: '10 min', value: '10_MIN' },
-    { icon: Clock, label: '15 min', value: '15_MIN' },
-    { icon: Clock, label: '20 min', value: '20_MIN' },
-    { icon: Clock, label: '25 min', value: '25_MIN' },
-    { icon: Clock, label: '30 min', value: '30_MIN' },
-    { icon: Clock, label: '45 min', value: '45_MIN' },
-    { icon: Clock, label: '1 hr', value: '1_HR' },
-    { icon: Clock, label: '2 hrs', value: '2_HR' },
-    { icon: Clock, label: '6 hrs', value: '6_HR' },
-    { icon: Clock, label: '12 hrs', value: '12_HR' },
-    { icon: Clock, label: '24 hrs', value: '24_HR' },
-  ];
+  protected readonly expiryDurationOptions = expiryDurationOptions;
 
   public shorten = output<ShortenFormData>();
 
