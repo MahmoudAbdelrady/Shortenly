@@ -37,14 +37,23 @@
   </div>
   @if (isActive()) {
     <div class="url-actions">
-      <div class="action-btn">
-        <lucide-icon [img]="CopyIcon" [size]="16"></lucide-icon>
-        <button type="button" class="copy-btn">Copy</button>
-      </div>
-      <div class="action-btn">
-        <lucide-icon [img]="BanIcon" [size]="16"></lucide-icon>
-        <button type="button" class="ban-btn">Expire</button>
-      </div>
+      <button
+        type="button"
+        class="action-btn copy-btn"
+        [class.copied]="copied()"
+        (click)="onCopyClick($event)"
+      >
+        @if (copied()) {
+          <lucide-icon [img]="CheckIcon" [size]="16"></lucide-icon>
+          Copied!
+        } @else {
+          <lucide-icon [img]="CopyIcon" [size]="16"></lucide-icon>
+          Copy
+        }
+      </button>
+      <button type="button" class="action-btn ban-btn">
+        <lucide-icon [img]="BanIcon" [size]="16"></lucide-icon> Expire
+      </button>
     </div>
   }
 </div>

@@ -1,6 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import {
   Ban,
+  Check,
   Clock4,
   Copy,
   ExternalLink,
@@ -26,6 +27,7 @@ export class UrlItem {
   protected readonly MousePointerClickIcon = MousePointerClick;
   protected readonly Clock4Icon = Clock4;
   protected readonly CopyIcon = Copy;
+  protected readonly CheckIcon = Check;
   protected readonly BanIcon = Ban;
   protected readonly expiryDurationOptions = expiryDurationOptions;
 
@@ -36,4 +38,13 @@ export class UrlItem {
   public urlType = input.required<string>();
   public createdAt = input.required<string>();
   public expiresAt = input.required<string>();
+
+  protected copied = signal(false);
+
+  protected async onCopyClick(event: Event) {
+    event.preventDefault();
+    this.copied.set(true);
+    setTimeout(() => this.copied.set(false), 2000);
+    await navigator.clipboard.writeText(this.shortUrl());
+  }
 }

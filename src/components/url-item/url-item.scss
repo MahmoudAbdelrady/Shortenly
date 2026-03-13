@@ -167,9 +167,11 @@
   border-radius: 8px;
   font-size: 12px;
   cursor: pointer;
+  background: none;
+  border: none;
   @include transition-default;
 
-  &:has(.copy-btn) {
+  &.copy-btn {
     background: rgba($violet-600, 0.12);
     border: 1px solid rgba($violet-600, 0.25);
     color: $violet-400;
@@ -177,9 +179,15 @@
     &:hover {
       background: rgba($violet-600, 0.2);
     }
+
+    &.copied {
+      background: rgba($success-dark, 0.15);
+      border-color: rgba($success-dark, 0.3);
+      color: $success;
+    }
   }
 
-  &:has(.ban-btn) {
+  &.ban-btn {
     background: rgba($white, 0.04);
     border: 1px solid rgba($white, 0.08);
     color: rgba($white, 0.45);
@@ -187,15 +195,5 @@
     &:hover {
       background: rgba($white, 0.08);
     }
-  }
-
-  button {
-    background: none;
-    border: none;
-    color: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    padding: 0;
-    cursor: pointer;
   }
 }
