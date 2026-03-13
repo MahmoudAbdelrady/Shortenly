@@ -1,0 +1,50 @@
+<div class="url-item" [class.active]="isActive()">
+  <div class="url-info">
+    <div class="short-url">
+      <span class="short-url-value">{{ shortUrl() }}</span>
+      <div class="short-url-tag">{{ isActive() ? 'Active' : 'Expired' }}</div>
+    </div>
+    <div class="original-url">
+      <span class="original-url-value">{{ originalUrl() }}</span>
+      <lucide-icon [img]="ExternalLinkIcon" [size]="16"></lucide-icon>
+    </div>
+    <div class="metadata">
+      <div class="metadata-item">
+        <lucide-icon [img]="MousePointerClickIcon" [size]="16"></lucide-icon>
+        <span class="metadata-label">{{ clicks() }} clicks</span>
+      </div>
+      <div class="metadata-item">
+        <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
+        <span class="metadata-label">Created {{ createdAt() }}</span>
+      </div>
+      <div class="metadata-item">
+        <lucide-icon
+          [img]="expiryDurationOptions.find(option => option.value === urlType())?.icon"
+          [size]="16"
+        ></lucide-icon>
+        <span
+          class="metadata-label"
+          >{{ expiryDurationOptions.find(option => option.value === urlType())?.label }}</span
+        >
+      </div>
+      <div class="metadata-item">
+        <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
+        <span class="metadata-label"
+          >{{ isActive() ? 'Expires' : 'Expired' }} {{ expiresAt() }}</span
+        >
+      </div>
+    </div>
+  </div>
+  @if (isActive()) {
+    <div class="url-actions">
+      <div class="action-btn">
+        <lucide-icon [img]="CopyIcon" [size]="16"></lucide-icon>
+        <button type="button" class="copy-btn">Copy</button>
+      </div>
+      <div class="action-btn">
+        <lucide-icon [img]="BanIcon" [size]="16"></lucide-icon>
+        <button type="button" class="ban-btn">Expire</button>
+      </div>
+    </div>
+  }
+</div>

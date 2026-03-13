@@ -34,67 +34,23 @@
     </div>
   </div>
   <div class="urls-list">
-    <div class="url-item" [class.active]="true">
-      <div class="url-info">
-        <div class="short-url">
-          <span class="short-url-value">https://snip.ly/YOILwh</span>
-          <div class="short-url-tag">Active</div>
-        </div>
-        <div class="original-url">
-          <span class="original-url-value">https://five-payer-71482518.figma.site/</span>
-          <lucide-icon [img]="ExternalLinkIcon" [size]="16"></lucide-icon>
-        </div>
-        <div class="metadata">
-          <div class="metadata-item">
-            <lucide-icon [img]="MousePointerClickIcon" [size]="16"></lucide-icon>
-            <span class="metadata-label">0 clicks</span>
-          </div>
-          <div class="metadata-item">
-            <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
-            <span class="metadata-label">Created 2 days ago</span>
-          </div>
-          <div class="metadata-item">
-            <lucide-icon [img]="expiryDurationOptions[1].icon" [size]="16"></lucide-icon>
-            <span class="metadata-label">{{ expiryDurationOptions[1].label }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="url-actions">
-        <div class="action-btn">
-          <lucide-icon [img]="CopyIcon" [size]="16"></lucide-icon>
-          <button type="button" class="copy-btn">Copy</button>
-        </div>
-        <div class="action-btn">
-          <lucide-icon [img]="BanIcon" [size]="16"></lucide-icon>
-          <button type="button" class="ban-btn">Expire</button>
-        </div>
-      </div>
-    </div>
-    <div class="url-item" [class.active]="false">
-      <div class="url-info">
-        <div class="short-url">
-          <span class="short-url-value">https://snip.ly/YOILwh</span>
-          <div class="short-url-tag">Expired</div>
-        </div>
-        <div class="original-url">
-          <span class="original-url-value">https://five-payer-71482518.figma.site/</span>
-          <lucide-icon [img]="ExternalLinkIcon" [size]="16"></lucide-icon>
-        </div>
-        <div class="metadata">
-          <div class="metadata-item">
-            <lucide-icon [img]="MousePointerClickIcon" [size]="16"></lucide-icon>
-            <span class="metadata-label">5 clicks</span>
-          </div>
-          <div class="metadata-item">
-            <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
-            <span class="metadata-label">Created 4 days ago</span>
-          </div>
-          <div class="metadata-item">
-            <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
-            <span class="metadata-label">Expired 2 days ago</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <url-item
+      [isActive]="true"
+      shortUrl="https://snip.ly/YOILwh"
+      originalUrl="https://five-payer-71482518.figma.site/"
+      [clicks]="0"
+      urlType="NEVER_EXPIRES"
+      createdAt="2 days ago"
+      expiresAt="2026-03-15"
+    />
+    <url-item
+      [isActive]="false"
+      shortUrl="https://snip.ly/YOILwh"
+      originalUrl="https://five-payer-71482518.figma.site/"
+      [clicks]="5"
+      urlType="5_MIN"
+      createdAt="4 days ago"
+      expiresAt="2026-03-11"
+    />
   </div>
 </div>
