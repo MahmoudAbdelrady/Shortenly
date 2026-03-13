@@ -10,6 +10,7 @@ import {
   LucideAngularModule,
   MousePointerClick,
   Search,
+  TriangleAlert,
 } from 'lucide-angular';
 import { expiryDurationOptions } from '../../shared/types/general';
 
@@ -29,6 +30,7 @@ export class UrlItem {
   protected readonly CopyIcon = Copy;
   protected readonly CheckIcon = Check;
   protected readonly BanIcon = Ban;
+  protected readonly AlertTriangleIcon = TriangleAlert;
   protected readonly expiryDurationOptions = expiryDurationOptions;
 
   public isActive = input.required<boolean>();
@@ -40,11 +42,24 @@ export class UrlItem {
   public expiresAt = input.required<string>();
 
   protected copied = signal(false);
+  protected expireConfirmOpen = signal(false);
 
   protected async onCopyClick(event: Event) {
     event.preventDefault();
     this.copied.set(true);
     setTimeout(() => this.copied.set(false), 2000);
     await navigator.clipboard.writeText(this.shortUrl());
+  }
+
+  protected onExpireClick(event: Event) {
+    event.preventDefault();
+    this.expireConfirmOpen.set(true);
+  }
+
+  protected onExpireAction(expire: boolean) {
+    this.expireConfirmOpen.set(false);
+    if (expire) {
+      // Todo: api call to expire the link
+    }
   }
 }

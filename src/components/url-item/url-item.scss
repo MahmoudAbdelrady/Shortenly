@@ -197,3 +197,48 @@
     }
   }
 }
+
+.expire-confirm {
+  @include flex-row(8px);
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: rgba($error-dark, 0.1);
+  border: 1px solid rgba($error-dark, 0.25);
+}
+
+.expire-confirm-label {
+  @include flex-row(6px);
+  font-size: 12px;
+  color: $error;
+  white-space: nowrap;
+}
+
+.expire-confirm-yes,
+.expire-confirm-no {
+  @include flex-center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  @include transition-default(150ms);
+}
+
+.expire-confirm-yes {
+  background: rgba($error-dark, 0.2);
+  color: $error;
+
+  &:hover {
+    background: rgba($error-dark, 0.35);
+  }
+}
+
+.expire-confirm-no {
+  background: rgba($white, 0.06);
+  color: rgba($white, 0.5);
+
+  &:hover {
+    background: rgba($white, 0.12);
+  }
+}

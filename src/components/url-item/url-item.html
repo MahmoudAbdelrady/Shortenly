@@ -51,9 +51,24 @@
           Copy
         }
       </button>
-      <button type="button" class="action-btn ban-btn">
-        <lucide-icon [img]="BanIcon" [size]="16"></lucide-icon> Expire
-      </button>
+      @if (expireConfirmOpen()) {
+        <div class="expire-confirm">
+          <span class="expire-confirm-label">
+            <lucide-icon [img]="AlertTriangleIcon" [size]="14"></lucide-icon>
+            Expire this link?
+          </span>
+          <button type="button" class="expire-confirm-yes" (click)="onExpireAction(true)">
+            Yes
+          </button>
+          <button type="button" class="expire-confirm-no" (click)="onExpireAction(false)">
+            No
+          </button>
+        </div>
+      } @else if (urlType() !== 'NEVER_EXPIRES') {
+        <button type="button" class="action-btn ban-btn" (click)="onExpireClick($event)">
+          <lucide-icon [img]="BanIcon" [size]="16"></lucide-icon> Expire
+        </button>
+      }
     </div>
   }
 </div>
