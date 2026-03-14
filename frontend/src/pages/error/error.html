@@ -1,0 +1,13 @@
+<div class="error-container">
+  <div class="error-content">
+    <div class="error-icon">
+      <lucide-icon [img]="errorInfo().icon" [size]="40"></lucide-icon>
+    </div>
+    <h2>{{ errorInfo().title }}</h2>
+    <p>{{ errorInfo().message }}</p>
+    <a routerLink="/" class="home-button">
+      <lucide-icon [img]="HomeIcon" [size]="16"></lucide-icon>
+      <span>Go Home</span>
+    </a>
+  </div>
+</div>

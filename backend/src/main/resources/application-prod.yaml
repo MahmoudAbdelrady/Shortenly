@@ -1,0 +1,16 @@
+spring:
+  main:
+    banner-mode: off
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+app:
+  base-url: ${APP_BASE_URL}
+  frontend-url: ${FRONTEND_URL}
+
+logging:
+    level:
+        root: WARN
+        com.mdevs.shortenly: WARN

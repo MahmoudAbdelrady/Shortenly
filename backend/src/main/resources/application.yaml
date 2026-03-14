@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: shortenly
+  jpa:
+    hibernate:
+      ddl-auto: update
