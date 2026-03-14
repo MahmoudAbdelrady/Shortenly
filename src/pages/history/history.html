@@ -1,1 +1,82 @@
-<p>history works!</p>
+<div class="history-container">
+  <div class="header">
+    <div class="title">
+      <lucide-icon [img]="HistoryIcon" [size]="20"></lucide-icon>
+      <h3>URL History</h3>
+    </div>
+    <p class="description">Track and manage all your shortened links</p>
+  </div>
+  <div class="urls-stats">
+    <div class="url-status-item">
+      <span class="status-count">6</span>
+      <span class="status-label">Total links</span>
+    </div>
+    <div class="url-status-item">
+      <span class="status-count">5</span>
+      <span class="status-label">Active</span>
+    </div>
+    <div class="url-status-item">
+      <span class="status-count">1</span>
+      <span class="status-label">Expired</span>
+    </div>
+  </div>
+  <form [formGroup]="urlSearchForm" (ngSubmit)="onSubmit()" class="urls-search">
+    <div class="search-input">
+      <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>
+      <input type="text" placeholder="Search URLs..." formControlName="search" />
+    </div>
+    <div class="search-filter">
+      <custom-dropdown
+        [items]="linkStatusOptions"
+        [fieldValue]="urlSearchForm.value.status ?? linkStatusOptions[0].value"
+        [fieldValueDefaultIcon]="FilterIcon"
+        (valueChange)="onLinkStatusChange($event)"
+      />
+    </div>
+    <div class="action-btns">
+      <button type="submit" class="action-btn search-btn">
+        <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>
+        Search
+      </button>
+      <button type="button" class="action-btn reset-btn" (click)="onReset()">
+        <lucide-icon [img]="ResetIcon" [size]="16"></lucide-icon>
+        Reset
+      </button>
+    </div>
+  </form>
+  <div class="urls-list">
+    <url-item
+      [isActive]="true"
+      shortUrl="https://snip.ly/YOILwh"
+      originalUrl="https://five-payer-71482518.figma.site/"
+      [clicks]="0"
+      urlType="NEVER_EXPIRES"
+      createdAt="2 days ago"
+      expiresAt="2026-03-15"
+    />
+    <url-item
+      [isActive]="true"
+      shortUrl="https://snip.ly/YOILwh"
+      originalUrl="https://five-payer-71482518.figma.site/"
+      [clicks]="0"
+      urlType="ONE_TIME"
+      createdAt="1 days ago"
+      expiresAt="2026-03-17"
+    />
+    <url-item
+      [isActive]="false"
+      shortUrl="https://snip.ly/YOILwh"
+      originalUrl="https://five-payer-71482518.figma.site/"
+      [clicks]="5"
+      urlType="5_MIN"
+      createdAt="4 days ago"
+      expiresAt="2026-03-11"
+    />
+  </div>
+  <paginator
+    [currentPage]="currentPage()"
+    [pageSize]="pageSize()"
+    [totalItems]="totalItems()"
+    (pageChange)="onPageChange($event)"
+  />
+</div>

@@ -1,0 +1,40 @@
+<nav class="paginator" aria-label="Pagination">
+  <span class="page-info">
+    Showing {{ rangeStart() }}&ndash;{{ rangeEnd() }} of {{ totalItems() }} items
+  </span>
+
+  <div class="go-to-page">
+    <label for="goToPageInput">Go to page</label>
+    <input
+      id="goToPageInput"
+      type="number"
+      [min]="1"
+      [max]="totalPages()"
+      [value]="goToPageValue()"
+      (input)="goToPageValue.set($any($event.target).value)"
+      (keydown.enter)="onGoToPage()"
+      placeholder="#"
+    />
+  </div>
+
+  <div class="nav-buttons">
+    <button
+      class="nav-btn"
+      [disabled]="currentPage() === 1"
+      (click)="goToPage(currentPage() - 1)"
+      aria-label="Previous page"
+    >
+      <lucide-icon [img]="PrevIcon" [size]="16"></lucide-icon>
+      Prev
+    </button>
+    <button
+      class="nav-btn"
+      [disabled]="currentPage() === totalPages()"
+      (click)="goToPage(currentPage() + 1)"
+      aria-label="Next page"
+    >
+      Next
+      <lucide-icon [img]="NextIcon" [size]="16"></lucide-icon>
+    </button>
+  </div>
+</nav>

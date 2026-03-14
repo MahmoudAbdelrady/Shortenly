@@ -1,0 +1,83 @@
+@use '../../shared/styles/colors' as *;
+@use '../../shared/styles/mixins' as *;
+
+.paginator {
+  @include flex-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.page-info {
+  color: rgba($white, 0.4);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.go-to-page {
+  @include flex-row(8px);
+
+  label {
+    color: rgba($white, 0.4);
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  input {
+    width: 52px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba($white, 0.05);
+    border: 1px solid rgba($white, 0.1);
+    color: $white;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+    -moz-appearance: textfield;
+    @include transition-default;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &::placeholder {
+      color: rgba($white, 0.2);
+    }
+
+    &:focus {
+      border-color: rgba($violet-400, 0.5);
+    }
+  }
+}
+
+.nav-buttons {
+  @include flex-row(8px);
+}
+
+.nav-btn {
+  @include flex-center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba($white, 0.04);
+  border: 1px solid rgba($white, 0.08);
+  color: rgba($white, 0.6);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  @include transition-default;
+
+  &:hover:not(:disabled) {
+    background: rgba($white, 0.08);
+    color: $white;
+    border-color: rgba($white, 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
