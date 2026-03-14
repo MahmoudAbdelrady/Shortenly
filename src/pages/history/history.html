@@ -20,19 +20,30 @@
       <span class="status-label">Expired</span>
     </div>
   </div>
-  <div class="urls-search">
+  <form [formGroup]="urlSearchForm" (ngSubmit)="onSubmit()" class="urls-search">
     <div class="search-input">
       <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>
-      <input type="text" placeholder="Search URLs..." />
+      <input type="text" placeholder="Search URLs..." formControlName="search" />
     </div>
     <div class="search-filter">
       <custom-dropdown
         [items]="linkStatusOptions"
-        [fieldValue]="linkStatusOptions[0].value"
+        [fieldValue]="urlSearchForm.value.status ?? linkStatusOptions[0].value"
         [fieldValueDefaultIcon]="FilterIcon"
+        (valueChange)="onLinkStatusChange($event)"
       />
     </div>
-  </div>
+    <div class="action-btns">
+      <button type="submit" class="action-btn search-btn">
+        <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>
+        Search
+      </button>
+      <button type="button" class="action-btn reset-btn" (click)="onReset()">
+        <lucide-icon [img]="ResetIcon" [size]="16"></lucide-icon>
+        Reset
+      </button>
+    </div>
+  </form>
   <div class="urls-list">
     <url-item
       [isActive]="true"
@@ -62,4 +73,10 @@
       expiresAt="2026-03-11"
     />
   </div>
+  <paginator
+    [currentPage]="currentPage()"
+    [pageSize]="pageSize()"
+    [totalItems]="totalItems()"
+    (pageChange)="onPageChange($event)"
+  />
 </div>

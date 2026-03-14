@@ -109,11 +109,16 @@
 }
 
 .urls-search {
-  @include flex-row(12px);
+  @include flex-col(12px);
   margin-bottom: 20px;
   animation: fade-in 400ms ease 150ms both;
   position: relative;
   z-index: 1;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .search-input {
@@ -150,8 +155,53 @@
   }
 }
 
+.action-btns {
+  @include flex-row(12px);
+  flex-shrink: 0;
+  align-self: center;
+
+  @media (min-width: 640px) {
+    align-self: auto;
+  }
+
+  .action-btn {
+    @include flex-center;
+    gap: 8px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: none;
+    color: $white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    @include transition-default;
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  .search-btn {
+    background: linear-gradient(135deg, $violet-600, $indigo-600);
+    box-shadow: 0 4px 20px rgba($violet-600, 0.4);
+  }
+
+  .reset-btn {
+    background: rgba($white, 0.05);
+    border: 1px solid rgba($white, 0.1);
+    color: rgba($white, 0.6);
+
+    &:hover {
+      background: rgba($white, 0.08);
+      color: $white;
+      border-color: rgba($white, 0.2);
+    }
+  }
+}
+
 .urls-list {
   @include flex-col(12px);
   animation: fade-in 400ms ease 200ms both;
 }
-
