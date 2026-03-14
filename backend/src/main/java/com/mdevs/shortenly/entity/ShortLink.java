@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "short_links", indexes = {
-        @Index(name = "idx_expiry_type", columnList = "expiryType")
+        @Index(name = "idx_expiry_type", columnList = "expiryType"),
+        @Index(name = "idx_original_url", columnList = "originalUrl")
 })
 @Getter
 @Setter
