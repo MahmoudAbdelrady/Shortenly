@@ -1,5 +1,6 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { Check, Copy, Infinity, LucideAngularModule } from 'lucide-angular';
+import { ShortLinkResult } from '../../shared/types/general';
 
 @Component({
   selector: 'shorten-result',
@@ -13,6 +14,7 @@ export class ShortenResult {
   protected readonly InfinityIcon = Infinity;
 
   protected shortUrl = signal('https://snip.ly/vtBpRa');
+  public result = input.required<ShortLinkResult>();
   public onShortenAnother = output<void>();
 
   protected onShortenAnotherClick(event: Event) {

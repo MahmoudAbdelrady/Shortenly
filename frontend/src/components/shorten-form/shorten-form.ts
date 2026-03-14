@@ -9,12 +9,7 @@ import {
 } from '@angular/forms';
 import { FormError } from '../form-error/form-error';
 import { CustomDropdown } from '../custom-dropdown/custom-dropdown';
-import { expiryDurationOptions } from '../../shared/types/general';
-
-interface ShortenFormData {
-  longUrl: string;
-  expiryDuration: string;
-}
+import { expiryDurationOptions, ShortenFormData } from '../../shared/types/general';
 
 function urlValidator(control: AbstractControl): ValidationErrors | null {
   if (!control.value) {
@@ -37,8 +32,8 @@ function urlValidator(control: AbstractControl): ValidationErrors | null {
 export class ShortenForm {
   private formBuilder = inject(FormBuilder);
   protected urlShortenForm = this.formBuilder.group({
-    longUrl: ['', [Validators.required, urlValidator]],
-    expiryDuration: ['ONE_TIME', [Validators.required]],
+    url: ['', [Validators.required, urlValidator]],
+    expiryType: ['ONE_TIME', [Validators.required]],
   });
 
   protected readonly ArrowRightIcon = ArrowRight;
@@ -48,16 +43,16 @@ export class ShortenForm {
 
   public shorten = output<ShortenFormData>();
 
-  protected onExpiryDurationChange(value: string) {
-    this.urlShortenForm.patchValue({ expiryDuration: value });
+  protected onExpiryTypeChange(value: string) {
+    this.urlShortenForm.patchValue({ expiryType: value });
   }
 
   protected onSubmit() {
     this.urlShortenForm.markAllAsTouched();
     if (this.urlShortenForm.invalid) return;
     const formData: ShortenFormData = {
-      longUrl: this.urlShortenForm.value.longUrl ?? '',
-      expiryDuration: this.urlShortenForm.value.expiryDuration ?? 'ONE_TIME',
+      url: this.urlShortenForm.value.url ?? '',
+      expiryType: this.urlShortenForm.value.expiryType ?? 'ONE_TIME',
     };
     this.shorten.emit(formData);
   }

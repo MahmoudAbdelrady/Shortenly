@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LucideAngularModule, Sparkles } from 'lucide-angular';
 import { ShortenForm, ShortenResult } from '../../components';
+import { UrlShortenerService } from '../../service/url-shortener';
+import { ShortenFormData, ShortLinkResult } from '../../shared/types/general';
 
 @Component({
   selector: 'app-home',
@@ -9,14 +11,22 @@ import { ShortenForm, ShortenResult } from '../../components';
   styleUrl: 'home.scss',
 })
 export class HomeComponent {
+  private urlShortenerService = inject(UrlShortenerService);
   protected readonly SparklesIcon = Sparkles;
-  protected showResult = signal(false);
+  protected shortenResult = signal<ShortLinkResult | undefined>(undefined);
 
-  protected onShorten() {
-    this.showResult.set(true);
+  protected onShorten(data: ShortenFormData) {
+    this.urlShortenerService.shorten(data).subscribe({
+      next: (result) => {
+        this.shortenResult.set(result);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 
-  protected onShortenResult() {
-    this.showResult.set(false);
+  protected onShortenAnother() {
+    this.shortenResult.set(undefined);
   }
 }
