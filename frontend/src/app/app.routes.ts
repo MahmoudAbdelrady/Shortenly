@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AppLayoutComponent } from '../layout/app-layout';
-import { HistoryComponent, HomeComponent } from '../pages';
+import { ErrorComponent, HistoryComponent, HomeComponent } from '../pages';
 
 export const routes: Routes = [
   {
@@ -14,6 +14,10 @@ export const routes: Routes = [
       {
         path: 'history',
         component: HistoryComponent,
+      },
+      {
+        path: 'error',
+        component: ErrorComponent,
       },
     ],
   },

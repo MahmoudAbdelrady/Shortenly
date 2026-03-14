@@ -9,23 +9,24 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ExpiryType {
 
-    ONE_TIME("ONE_TIME"),
-    NEVER_EXPIRES("NEVER_EXPIRES"),
-    FIVE_MIN("5_MIN"),
-    TEN_MIN("10_MIN"),
-    FIFTEEN_MIN("15_MIN"),
-    TWENTY_MIN("20_MIN"),
-    TWENTY_FIVE_MIN("25_MIN"),
-    THIRTY_MIN("30_MIN"),
-    FORTY_FIVE_MIN("45_MIN"),
-    ONE_HR("1_HR"),
-    TWO_HR("2_HR"),
-    SIX_HR("6_HR"),
-    TWELVE_HR("12_HR"),
-    TWENTY_FOUR_HR("24_HR");
+    ONE_TIME("ONE_TIME", null),
+    NEVER_EXPIRES("NEVER_EXPIRES", null),
+    FIVE_MIN("5_MIN", 5),
+    TEN_MIN("10_MIN", 10),
+    FIFTEEN_MIN("15_MIN", 15),
+    TWENTY_MIN("20_MIN", 20),
+    TWENTY_FIVE_MIN("25_MIN", 25),
+    THIRTY_MIN("30_MIN", 30),
+    FORTY_FIVE_MIN("45_MIN", 45),
+    ONE_HR("1_HR", 60),
+    TWO_HR("2_HR", 120),
+    SIX_HR("6_HR", 360),
+    TWELVE_HR("12_HR", 720),
+    TWENTY_FOUR_HR("24_HR", 1440);
 
     @JsonValue
     private final String value;
+    private final Integer minutes;
 
     @JsonCreator
     public static ExpiryType fromValue(String value) {
