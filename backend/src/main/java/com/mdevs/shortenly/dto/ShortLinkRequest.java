@@ -5,10 +5,10 @@ import jakarta.validation.constraints.Pattern;
 
 public record ShortLinkRequest(
 
-        @NotBlank
-        @Pattern(regexp = "^https?://[^\\s/$.?#].[^\\s]*$")
+        @NotBlank(message = "URL must be provided")
+        @Pattern(regexp = "^https?://[^\\s/$.?#].\\S*$", message = "Invalid URL format")
         String url,
 
-        @NotBlank
+        @NotBlank(message = "Expiry type must be provided")
         String expiryType
 ) {}
