@@ -3,20 +3,23 @@ import { Funnel, History, LucideAngularModule, RotateCcw, Search } from 'lucide-
 import { CustomDropdown } from '../../components/custom-dropdown/custom-dropdown';
 import { UrlItem } from '../../components/url-item/url-item';
 import { Paginator } from '../../components/paginator/paginator';
-import { DropdownOption } from '../../shared/types/general';
+import {
+  DropdownOption,
+  PageObj,
+  ShortLinkRecord,
+  ShortLinkSearch,
+} from '../../shared/types/general';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { UrlShortenerService } from '../../service/url-shortener';
+import { Loading } from '../../components';
+import { finalize } from 'rxjs';
 
 const LINK_STATUS = { ALL: 'ALL', ACTIVE: 'ACTIVE', EXPIRED: 'EXPIRED' } as const;
 type LinkStatus = (typeof LINK_STATUS)[keyof typeof LINK_STATUS];
 
-interface UrlSearchFormData {
-  search: string;
-  status: LinkStatus;
-}
-
 @Component({
   selector: 'app-history',
-  imports: [LucideAngularModule, CustomDropdown, UrlItem, Paginator, ReactiveFormsModule],
+  imports: [LucideAngularModule, CustomDropdown, UrlItem, Paginator, ReactiveFormsModule, Loading],
   templateUrl: 'history.html',
   styleUrl: 'history.scss',
 })
@@ -40,11 +43,24 @@ export class HistoryComponent {
     },
   ];
 
+  private urlShortenerService = inject(UrlShortenerService);
   private formBuilder = inject(FormBuilder);
+  protected isLoading = signal(false);
   protected urlSearchForm = this.formBuilder.group({
-    search: [''],
-    status: [LINK_STATUS.ALL as LinkStatus],
+    search: this.formBuilder.control('', { nonNullable: true }),
+    status: this.formBuilder.control(LINK_STATUS.ALL as LinkStatus, { nonNullable: true }),
   });
+  protected shortLinks = signal<ShortLinkRecord[]>([]);
+  protected shortLinksPageInfo = signal<PageObj>({
+    number: 0,
+    size: 10,
+    totalElements: 0,
+    totalPages: 0,
+  });
+
+  constructor() {
+    this.search({});
+  }
 
   protected onLinkStatusChange(value: string) {
     this.urlSearchForm.patchValue({ status: value as LinkStatus });
@@ -53,25 +69,42 @@ export class HistoryComponent {
   protected onSubmit() {
     this.urlSearchForm.markAllAsTouched();
     if (this.urlSearchForm.invalid) return;
-    const formData: UrlSearchFormData = {
-      search: this.urlSearchForm.value.search ?? '',
-      status: this.urlSearchForm.value.status ?? LINK_STATUS.ALL,
-    };
-    console.log({ formData });
-    // todo: send to api
+    this.search(this.getSearchFormData());
   }
 
   protected onReset() {
     this.urlSearchForm.reset();
-    // todo: send to api
+    this.search({});
   }
 
-  protected currentPage = signal(1);
-  protected pageSize = signal(10);
-  protected totalItems = signal(56);
+  private getSearchFormData(): ShortLinkSearch {
+    return {
+      url: this.urlSearchForm.value.search ?? '',
+      isActive:
+        this.urlSearchForm.value.status === LINK_STATUS.ALL
+          ? undefined
+          : this.urlSearchForm.value.status === LINK_STATUS.ACTIVE,
+    };
+  }
+
+  private search(search: ShortLinkSearch) {
+    this.isLoading.set(true);
+    this.urlShortenerService
+      .search(search)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (result) => {
+          this.shortLinks.set(result.content);
+          this.shortLinksPageInfo.set(result.page);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+  }
 
   protected onPageChange(page: number) {
-    this.currentPage.set(page);
-    // todo: fetch page data from api
+    this.shortLinksPageInfo.set({ ...this.shortLinksPageInfo(), number: page });
+    this.search({ ...this.getSearchFormData(), page });
   }
 }

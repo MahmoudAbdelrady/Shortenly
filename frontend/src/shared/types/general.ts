@@ -21,9 +21,11 @@ export interface ShortLinkResult {
 export interface ShortLinkSearch {
   url?: string;
   isActive?: boolean;
+  page?: number;
+  size?: number;
 }
 
-interface PageObj {
+export interface PageObj {
   number: number;
   size: number;
   totalElements: number;

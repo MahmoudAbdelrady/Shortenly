@@ -3,6 +3,7 @@ import { LucideAngularModule, Sparkles } from 'lucide-angular';
 import { ShortenForm, ShortenResult } from '../../components';
 import { UrlShortenerService } from '../../service/url-shortener';
 import { ShortenFormData, ShortLinkResult } from '../../shared/types/general';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,9 @@ export class HomeComponent {
 
   protected onShorten(data: ShortenFormData) {
     this.isShortening.set(true);
-    this.urlShortenerService.shorten(data).subscribe({
+    this.urlShortenerService.shorten(data).pipe(
+      finalize(() => this.isShortening.set(false))
+    ).subscribe({
       next: (result) => {
         this.shortenResult.set(result);
       },
@@ -26,7 +29,6 @@ export class HomeComponent {
         console.error(error);
       },
     });
-    this.isShortening.set(false);
   }
 
   protected onShortenAnother() {

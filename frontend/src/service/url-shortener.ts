@@ -19,8 +19,10 @@ export class UrlShortenerService {
     const params = Object.fromEntries(
       Object.entries(search).filter(([, v]) => v != null && v !== undefined && v !== ''),
     );
+    params['page'] = search.page ?? 0;
+    params['size'] = search.size ?? 10;
 
-    return this.httpClient.get<PageableResponse<ShortLinkRecord[]>>(
+    return this.httpClient.get<PageableResponse<ShortLinkRecord>>(
       `${environment.apiUrl}/short-links`,
       { params },
     );

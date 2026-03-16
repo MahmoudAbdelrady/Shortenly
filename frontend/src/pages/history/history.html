@@ -44,39 +44,28 @@
       </button>
     </div>
   </form>
-  <div class="urls-list">
-    <url-item
-      [isActive]="true"
-      shortUrl="https://snip.ly/YOILwh"
-      originalUrl="https://five-payer-71482518.figma.site/"
-      [clicks]="0"
-      urlType="NEVER_EXPIRES"
-      createdAt="2 days ago"
-      expiresAt="2026-03-15"
+  @if (isLoading()) {
+    <loading />
+  } @else {
+    <div class="urls-list">
+      @for (shortLink of shortLinks(); track shortLink.shortUrl) {
+        <url-item
+          [isActive]="!shortLink.isExpired"
+          [shortUrl]="shortLink.shortUrl"
+          [originalUrl]="shortLink.originalUrl"
+          [clicks]="shortLink.clicks"
+          [urlType]="shortLink.expiryType"
+          [createdAt]="shortLink.createdAt"
+          [expiresAt]="shortLink.expiresAt"
+        />
+      }
+    </div>
+    <paginator
+      [currentPage]="shortLinksPageInfo().number"
+      [pageSize]="shortLinksPageInfo().size"
+      [totalItems]="shortLinksPageInfo().totalElements"
+      [totalPages]="shortLinksPageInfo().totalPages"
+      (pageChange)="onPageChange($event)"
     />
-    <url-item
-      [isActive]="true"
-      shortUrl="https://snip.ly/YOILwh"
-      originalUrl="https://five-payer-71482518.figma.site/"
-      [clicks]="0"
-      urlType="ONE_TIME"
-      createdAt="1 days ago"
-      expiresAt="2026-03-17"
-    />
-    <url-item
-      [isActive]="false"
-      shortUrl="https://snip.ly/YOILwh"
-      originalUrl="https://five-payer-71482518.figma.site/"
-      [clicks]="5"
-      urlType="5_MIN"
-      createdAt="4 days ago"
-      expiresAt="2026-03-11"
-    />
-  </div>
-  <paginator
-    [currentPage]="currentPage()"
-    [pageSize]="pageSize()"
-    [totalItems]="totalItems()"
-    (pageChange)="onPageChange($event)"
-  />
+  }
 </div>

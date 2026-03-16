@@ -1,0 +1,22 @@
+@use '../../shared/styles/colors' as *;
+@use '../../shared/styles/mixins' as *;
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container {
+  @include flex-center;
+  padding: 48px 0;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba($white, 0.1);
+  border-top-color: $violet-400;
+  border-radius: 50%;
+  animation: spin 600ms linear infinite;
+}

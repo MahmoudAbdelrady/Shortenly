@@ -5,7 +5,7 @@
       <div class="short-url-tag">{{ isActive() ? 'Active' : 'Expired' }}</div>
     </div>
     <div class="original-url">
-      <span class="original-url-value">{{ originalUrl() }}</span>
+      <a class="original-url-value" [href]="originalUrl()" target="_blank">{{ originalUrl() }}</a>
       <lucide-icon [img]="ExternalLinkIcon" [size]="16"></lucide-icon>
     </div>
     <div class="metadata">
@@ -27,12 +27,14 @@
           >{{ expiryDurationOptions.find(option => option.value === urlType())?.label }}</span
         >
       </div>
-      <div class="metadata-item">
-        <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
-        <span class="metadata-label"
-          >{{ isActive() ? 'Expires' : 'Expired' }} {{ expiresAt() }}</span
-        >
-      </div>
+      @if (expiresAt()) {
+        <div class="metadata-item">
+          <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
+          <span class="metadata-label"
+            >{{ isActive() ? 'Expires' : 'Expired' }} {{ expiresAt() }}</span
+          >
+        </div>
+      }
     </div>
   </div>
   @if (isActive()) {
