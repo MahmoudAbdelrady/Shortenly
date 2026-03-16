@@ -75,7 +75,13 @@ button[type='submit'] {
   box-shadow: 0 4px 20px rgba($violet-600, 0.4);
   @include transition-default;
 
-  &:active {
+  &:active:not(:disabled) {
     transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
   }
 }

@@ -1,5 +1,5 @@
 import { Component, inject, input, output } from '@angular/core';
-import { ArrowRight, Link2, LoaderCircle, LucideAngularModule, Zap } from 'lucide-angular';
+import { ArrowRight, Link2, LucideAngularModule, Zap } from 'lucide-angular';
 import {
   AbstractControl,
   FormBuilder,
@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { FormError } from '../form-error/form-error';
 import { CustomDropdown } from '../custom-dropdown/custom-dropdown';
+import { Loading } from '../loading/loading';
 import { expiryDurationOptions, ShortenFormData } from '../../shared/types/general';
 
 function urlValidator(control: AbstractControl): ValidationErrors | null {
@@ -25,7 +26,7 @@ function urlValidator(control: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'shorten-form',
-  imports: [LucideAngularModule, CustomDropdown, FormError, ReactiveFormsModule],
+  imports: [LucideAngularModule, CustomDropdown, FormError, Loading, ReactiveFormsModule],
   templateUrl: 'shorten-form.html',
   styleUrl: 'shorten-form.scss',
 })
@@ -39,7 +40,6 @@ export class ShortenForm {
   protected readonly ArrowRightIcon = ArrowRight;
   protected readonly ZapIcon = Zap;
   protected readonly LinkIcon = Link2;
-  protected readonly LoaderIcon = LoaderCircle;
   protected readonly expiryDurationOptions = expiryDurationOptions;
 
   public isLoading = input<boolean>(false);
