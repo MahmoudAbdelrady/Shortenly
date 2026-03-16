@@ -1,6 +1,6 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { Check, Copy, Infinity, LucideAngularModule } from 'lucide-angular';
-import { ShortLinkResult } from '../../shared/types/general';
+import { expiryDurationOptions, ShortLinkResult } from '../../shared/types/general';
 
 @Component({
   selector: 'shorten-result',
@@ -13,9 +13,12 @@ export class ShortenResult {
   protected readonly CopyIcon = Copy;
   protected readonly InfinityIcon = Infinity;
 
-  protected shortUrl = signal('https://snip.ly/vtBpRa');
   public result = input.required<ShortLinkResult>();
   public onShortenAnother = output<void>();
+  protected resultData = computed(() => ({
+    ...this.result(),
+    expiryType: expiryDurationOptions.find((option) => option.value === this.result().expiryType)!,
+  }));
 
   protected onShortenAnotherClick(event: Event) {
     event.preventDefault();
@@ -26,7 +29,7 @@ export class ShortenResult {
 
   protected async onCopyClick(event: Event) {
     event.preventDefault();
-    await navigator.clipboard.writeText(this.shortUrl());
+    await navigator.clipboard.writeText(this.result().shortUrl);
     this.copied.set(true);
     setTimeout(() => this.copied.set(false), 2000);
   }

@@ -1,5 +1,5 @@
-import { Component, inject, output } from '@angular/core';
-import { ArrowRight, Link2, LucideAngularModule, Zap } from 'lucide-angular';
+import { Component, inject, input, output } from '@angular/core';
+import { ArrowRight, Link2, LoaderCircle, LucideAngularModule, Zap } from 'lucide-angular';
 import {
   AbstractControl,
   FormBuilder,
@@ -39,8 +39,10 @@ export class ShortenForm {
   protected readonly ArrowRightIcon = ArrowRight;
   protected readonly ZapIcon = Zap;
   protected readonly LinkIcon = Link2;
+  protected readonly LoaderIcon = LoaderCircle;
   protected readonly expiryDurationOptions = expiryDurationOptions;
 
+  public isLoading = input<boolean>(false);
   public shorten = output<ShortenFormData>();
 
   protected onExpiryTypeChange(value: string) {

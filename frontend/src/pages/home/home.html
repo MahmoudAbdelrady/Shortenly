@@ -19,7 +19,7 @@
         (onShortenAnother)="onShortenAnother()"
       ></shorten-result>
     } @else {
-      <shorten-form (shorten)="onShorten($event)"></shorten-form>
+      <shorten-form [isLoading]="isShortening()" (shorten)="onShorten($event)"></shorten-form>
     }
   </div>
   <div class="footer">

@@ -29,8 +29,13 @@
     />
   </div>
   <button type="submit">
-    <lucide-icon [img]="ZapIcon" [size]="16"></lucide-icon>
-    Shorten URL
-    <lucide-icon [img]="ArrowRightIcon" [size]="16"></lucide-icon>
+    @if (isLoading()) {
+      <lucide-icon [img]="LoaderIcon" [size]="16"></lucide-icon>
+      Shortening...
+    } @else {
+      <lucide-icon [img]="ZapIcon" [size]="16"></lucide-icon>
+      Shorten URL
+      <lucide-icon [img]="ArrowRightIcon" [size]="16"></lucide-icon>
+    }
   </button>
 </form>
