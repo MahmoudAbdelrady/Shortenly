@@ -14,6 +14,7 @@ import {
 } from 'lucide-angular';
 import { expiryDurationOptions, ShortLinkRecord } from '../../shared/types/general';
 import { UrlShortenerService } from '../../service/url-shortener';
+import { ToastService } from '../../service/toast';
 
 @Component({
   selector: 'url-item',
@@ -39,6 +40,7 @@ export class UrlItem {
   public deactivated = output<ShortLinkRecord>();
 
   private readonly urlShortenerService = inject(UrlShortenerService);
+  private readonly toastService = inject(ToastService);
   protected copied = signal(false);
   protected deactivateConfirmOpen = signal(false);
 
@@ -63,7 +65,7 @@ export class UrlItem {
           this.deactivated.emit(result);
         },
         error: (error) => {
-          console.error(error);
+          this.toastService.show(error.error?.message ?? 'Failed to deactivate link');
         },
       });
     }

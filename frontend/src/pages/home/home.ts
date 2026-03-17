@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { LucideAngularModule, Sparkles } from 'lucide-angular';
 import { ShortenForm, ShortenResult } from '../../components';
 import { UrlShortenerService } from '../../service/url-shortener';
+import { ToastService } from '../../service/toast';
 import { ShortenFormData, ShortLinkResult } from '../../shared/types/general';
 import { finalize } from 'rxjs';
 
@@ -13,6 +14,7 @@ import { finalize } from 'rxjs';
 })
 export class HomeComponent {
   private urlShortenerService = inject(UrlShortenerService);
+  private toastService = inject(ToastService);
   protected readonly SparklesIcon = Sparkles;
   protected shortenResult = signal<ShortLinkResult | undefined>(undefined);
   protected isShortening = signal(false);
@@ -26,7 +28,7 @@ export class HomeComponent {
         this.shortenResult.set(result);
       },
       error: (error) => {
-        console.error(error);
+        this.toastService.show(error.error?.message ?? 'Failed to shorten URL');
       },
     });
   }

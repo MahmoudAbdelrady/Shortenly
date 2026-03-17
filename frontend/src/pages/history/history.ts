@@ -12,6 +12,7 @@ import {
 } from '../../shared/types/general';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UrlShortenerService } from '../../service/url-shortener';
+import { ToastService } from '../../service/toast';
 import { Loading } from '../../components';
 import { finalize } from 'rxjs';
 
@@ -45,6 +46,7 @@ export class HistoryComponent {
   ];
 
   private urlShortenerService = inject(UrlShortenerService);
+  private toastService = inject(ToastService);
   private formBuilder = inject(FormBuilder);
   protected isLoading = signal(false);
   protected isStatisticsLoading = signal(false);
@@ -105,7 +107,7 @@ export class HistoryComponent {
           this.shortLinksStatistics.set(result);
         },
         error: (error) => {
-          console.error(error);
+          this.toastService.show(error.error?.message ?? 'Failed to load statistics');
         },
       });
   }
@@ -121,7 +123,7 @@ export class HistoryComponent {
           this.shortLinksPageInfo.set(result.page);
         },
         error: (error) => {
-          console.error(error);
+          this.toastService.show(error.error?.message ?? 'Failed to search links');
         },
       });
   }
