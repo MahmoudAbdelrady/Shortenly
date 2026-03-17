@@ -1,6 +1,7 @@
 package com.mdevs.shortenly.dto;
 
 public record ShortLinkRecord(
+        String id,
         String originalUrl,
         String shortUrl,
         Long clicks,

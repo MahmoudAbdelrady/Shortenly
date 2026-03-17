@@ -29,4 +29,9 @@ public class ShortLinkController {
     public ResponseEntity<ShortLinkResult> create(@Valid @RequestBody ShortLinkRequest request) {
         return new ResponseEntity<>(shortLinkService.create(request), HttpStatus.CREATED);
     }
+
+    @PatchMapping("/{uuid}/deactivate")
+    public ResponseEntity<ShortLinkRecord> deactivate(@PathVariable String uuid) {
+        return ResponseEntity.ok(shortLinkService.deactivate(uuid));
+    }
 }

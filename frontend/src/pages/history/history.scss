@@ -205,3 +205,23 @@
   @include flex-col(12px);
   animation: fade-in 400ms ease 200ms both;
 }
+
+.no-results {
+  @include flex-col(12px);
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  border-radius: 12px;
+  background: rgba($white, 0.02);
+  border: 1px solid rgba($white, 0.06);
+
+  lucide-icon {
+    color: rgba($white, 0.2);
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: rgba($white, 0.35);
+  }
+}

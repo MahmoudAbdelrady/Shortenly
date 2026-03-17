@@ -1,43 +1,43 @@
-<div class="url-item" [class.active]="isActive()">
+<div class="url-item" [class.active]="!link().isExpired">
   <div class="url-info">
     <div class="short-url">
-      <span class="short-url-value">{{ shortUrl() }}</span>
-      <div class="short-url-tag">{{ isActive() ? 'Active' : 'Expired' }}</div>
+      <span class="short-url-value">{{ link().shortUrl }}</span>
+      <div class="short-url-tag">{{ !link().isExpired ? 'Active' : 'Expired' }}</div>
     </div>
     <div class="original-url">
-      <a class="original-url-value" [href]="originalUrl()" target="_blank">{{ originalUrl() }}</a>
+      <a class="original-url-value" [href]="link().originalUrl" target="_blank">{{ link().originalUrl }}</a>
       <lucide-icon [img]="ExternalLinkIcon" [size]="16"></lucide-icon>
     </div>
     <div class="metadata">
       <div class="metadata-item">
         <lucide-icon [img]="MousePointerClickIcon" [size]="16"></lucide-icon>
-        <span class="metadata-label">{{ clicks() }} clicks</span>
+        <span class="metadata-label">{{ link().clicks }} clicks</span>
       </div>
       <div class="metadata-item">
         <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
-        <span class="metadata-label">Created {{ createdAt() }}</span>
+        <span class="metadata-label">Created {{ link().createdAt }}</span>
       </div>
       <div class="metadata-item">
         <lucide-icon
-          [img]="expiryDurationOptions.find(option => option.value === urlType())?.icon"
+          [img]="expiryDurationOptions.find(option => option.value === link().expiryType)?.icon"
           [size]="16"
         ></lucide-icon>
         <span
           class="metadata-label"
-          >{{ expiryDurationOptions.find(option => option.value === urlType())?.label }}</span
+          >{{ expiryDurationOptions.find(option => option.value === link().expiryType)?.label }}</span
         >
       </div>
-      @if (expiresAt()) {
+      @if (link().expiresAt) {
         <div class="metadata-item">
           <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
           <span class="metadata-label"
-            >{{ isActive() ? 'Expires' : 'Expired' }} {{ expiresAt() }}</span
+            >{{ !link().isExpired ? 'Expires' : 'Expired' }} {{ link().expiresAt }}</span
           >
         </div>
       }
     </div>
   </div>
-  @if (isActive()) {
+  @if (!link().isExpired) {
     <div class="url-actions">
       <button
         type="button"
@@ -53,22 +53,22 @@
           Copy
         }
       </button>
-      @if (expireConfirmOpen()) {
-        <div class="expire-confirm">
-          <span class="expire-confirm-label">
+      @if (deactivateConfirmOpen()) {
+        <div class="deactivate-confirm">
+          <span class="deactivate-confirm-label">
             <lucide-icon [img]="AlertTriangleIcon" [size]="14"></lucide-icon>
-            Expire this link?
+            Deactivate this link?
           </span>
-          <button type="button" class="expire-confirm-yes" (click)="onExpireAction(true)">
+          <button type="button" class="deactivate-confirm-yes" (click)="onDeactivateAction(true)">
             Yes
           </button>
-          <button type="button" class="expire-confirm-no" (click)="onExpireAction(false)">
+          <button type="button" class="deactivate-confirm-no" (click)="onDeactivateAction(false)">
             No
           </button>
         </div>
-      } @else if (urlType() !== 'NEVER_EXPIRES') {
-        <button type="button" class="action-btn ban-btn" (click)="onExpireClick($event)">
-          <lucide-icon [img]="BanIcon" [size]="16"></lucide-icon> Expire
+      } @else if (link().expiryType !== 'NEVER_EXPIRES') {
+        <button type="button" class="action-btn ban-btn" (click)="onDeactivateClick($event)">
+          <lucide-icon [img]="BanIcon" [size]="16"></lucide-icon> Deactivate
         </button>
       }
     </div>

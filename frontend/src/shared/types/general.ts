@@ -38,6 +38,7 @@ export interface PageableResponse<T> {
 }
 
 export interface ShortLinkRecord {
+  id: string;
   shortUrl: string;
   originalUrl: string;
   expiryType: string;

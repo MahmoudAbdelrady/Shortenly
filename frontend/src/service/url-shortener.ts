@@ -31,4 +31,11 @@ export class UrlShortenerService {
   public shorten(data: ShortenFormData) {
     return this.httpClient.post<ShortLinkResult>(`${environment.apiUrl}/short-links`, data);
   }
+
+  public deactivate(id: string) {
+    return this.httpClient.patch<ShortLinkRecord>(
+      `${environment.apiUrl}/short-links/${id}/deactivate`,
+      {},
+    );
+  }
 }

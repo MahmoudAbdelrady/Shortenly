@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "short_links", indexes = {
@@ -22,6 +23,9 @@ public class ShortLink {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true, updatable = false)
+    private String uuid;
 
     @CreationTimestamp
     @Column(updatable = false, columnDefinition = "TIMESTAMP(0)")
@@ -46,6 +50,13 @@ public class ShortLink {
 
     @Column(columnDefinition = "TIMESTAMP(0)")
     private LocalDateTime expiresAt;
+
+    @PrePersist
+    private void generateUuid() {
+        if (uuid == null) {
+            uuid = UUID.randomUUID().toString();
+        }
+    }
 
     @Transient
     public boolean isExpired() {

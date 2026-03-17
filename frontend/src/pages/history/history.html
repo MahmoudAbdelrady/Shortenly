@@ -48,16 +48,13 @@
     <loading />
   } @else {
     <div class="urls-list">
-      @for (shortLink of shortLinks(); track shortLink.shortUrl) {
-        <url-item
-          [isActive]="!shortLink.isExpired"
-          [shortUrl]="shortLink.shortUrl"
-          [originalUrl]="shortLink.originalUrl"
-          [clicks]="shortLink.clicks"
-          [urlType]="shortLink.expiryType"
-          [createdAt]="shortLink.createdAt"
-          [expiresAt]="shortLink.expiresAt"
-        />
+      @for (shortLink of shortLinks(); track shortLink.id) {
+        <url-item [link]="shortLink" />
+      } @empty {
+        <div class="no-results">
+          <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>
+          <p>No results found</p>
+        </div>
       }
     </div>
     <paginator

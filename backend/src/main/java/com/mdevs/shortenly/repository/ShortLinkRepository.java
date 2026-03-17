@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ShortLinkRepository extends JpaRepository<ShortLink, Long> {
 
     Optional<ShortLink> findByCode(String code);
+
+    Optional<ShortLink> findByUuid(String uuid);
 }
