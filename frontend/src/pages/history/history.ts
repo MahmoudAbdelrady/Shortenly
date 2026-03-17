@@ -8,6 +8,7 @@ import {
   PageObj,
   ShortLinkRecord,
   ShortLinkSearch,
+  ShortLinkStatistics,
 } from '../../shared/types/general';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UrlShortenerService } from '../../service/url-shortener';
@@ -46,6 +47,7 @@ export class HistoryComponent {
   private urlShortenerService = inject(UrlShortenerService);
   private formBuilder = inject(FormBuilder);
   protected isLoading = signal(false);
+  protected isStatisticsLoading = signal(false);
   protected urlSearchForm = this.formBuilder.group({
     search: this.formBuilder.control('', { nonNullable: true }),
     status: this.formBuilder.control(LINK_STATUS.ALL as LinkStatus, { nonNullable: true }),
@@ -57,9 +59,15 @@ export class HistoryComponent {
     totalElements: 0,
     totalPages: 0,
   });
+  protected shortLinksStatistics = signal<ShortLinkStatistics>({
+    totalLinks: 0,
+    activeLinks: 0,
+    disabledLinks: 0,
+  });
 
   constructor() {
     this.search({});
+    this.getStatistics();
   }
 
   protected onLinkStatusChange(value: string) {
@@ -87,6 +95,21 @@ export class HistoryComponent {
     };
   }
 
+  private getStatistics() {
+    this.isStatisticsLoading.set(true);
+    this.urlShortenerService
+      .statistics()
+      .pipe(finalize(() => this.isStatisticsLoading.set(false)))
+      .subscribe({
+        next: (result) => {
+          this.shortLinksStatistics.set(result);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+  }
+
   private search(search: ShortLinkSearch) {
     this.isLoading.set(true);
     this.urlShortenerService
@@ -101,6 +124,10 @@ export class HistoryComponent {
           console.error(error);
         },
       });
+  }
+
+  protected onLinkDeactivated() {
+    this.getStatistics();
   }
 
   protected onPageChange(page: number) {

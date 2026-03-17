@@ -1,4 +1,4 @@
-import { Component, inject, input, linkedSignal, signal } from '@angular/core';
+import { Component, inject, input, linkedSignal, output, signal } from '@angular/core';
 import {
   Ban,
   Check,
@@ -36,6 +36,7 @@ export class UrlItem {
 
   public linkInput = input.required<ShortLinkRecord>({ alias: 'link' });
   public link = linkedSignal(() => this.linkInput());
+  public deactivated = output<ShortLinkRecord>();
 
   private readonly urlShortenerService = inject(UrlShortenerService);
   protected copied = signal(false);
@@ -59,6 +60,7 @@ export class UrlItem {
       this.urlShortenerService.deactivate(this.link().id).subscribe({
         next: (result) => {
           this.link.set(result);
+          this.deactivated.emit(result);
         },
         error: (error) => {
           console.error(error);

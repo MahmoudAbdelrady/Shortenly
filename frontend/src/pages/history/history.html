@@ -6,20 +6,24 @@
     </div>
     <p class="description">Track and manage all your shortened links</p>
   </div>
-  <div class="urls-stats">
-    <div class="url-status-item">
-      <span class="status-count">6</span>
-      <span class="status-label">Total links</span>
+  @if (isStatisticsLoading()) {
+    <loading />
+  } @else {
+    <div class="urls-stats">
+      <div class="url-status-item">
+        <span class="status-count">{{ shortLinksStatistics().totalLinks }}</span>
+        <span class="status-label">Total links</span>
+      </div>
+      <div class="url-status-item">
+        <span class="status-count">{{ shortLinksStatistics().activeLinks }}</span>
+        <span class="status-label">Active</span>
+      </div>
+      <div class="url-status-item">
+        <span class="status-count">{{ shortLinksStatistics().disabledLinks }}</span>
+        <span class="status-label">Expired</span>
+      </div>
     </div>
-    <div class="url-status-item">
-      <span class="status-count">5</span>
-      <span class="status-label">Active</span>
-    </div>
-    <div class="url-status-item">
-      <span class="status-count">1</span>
-      <span class="status-label">Expired</span>
-    </div>
-  </div>
+  }
   <form [formGroup]="urlSearchForm" (ngSubmit)="onSubmit()" class="urls-search">
     <div class="search-input">
       <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>
@@ -49,7 +53,7 @@
   } @else {
     <div class="urls-list">
       @for (shortLink of shortLinks(); track shortLink.id) {
-        <url-item [link]="shortLink" />
+        <url-item [link]="shortLink" (deactivated)="onLinkDeactivated()" />
       } @empty {
         <div class="no-results">
           <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>

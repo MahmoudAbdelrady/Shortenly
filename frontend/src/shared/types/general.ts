@@ -48,6 +48,12 @@ export interface ShortLinkRecord {
   isExpired: boolean;
 }
 
+export interface ShortLinkStatistics {
+  totalLinks: number;
+  activeLinks: number;
+  disabledLinks: number;
+}
+
 export const expiryDurationOptions: DropdownOption[] = [
   { icon: Ticket, label: 'One time', value: 'ONE_TIME' },
   { icon: InfinityIcon, label: 'Never expires', value: 'NEVER_EXPIRES' },

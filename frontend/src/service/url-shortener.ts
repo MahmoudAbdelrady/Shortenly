@@ -6,6 +6,7 @@ import {
   ShortLinkRecord,
   ShortLinkResult,
   ShortLinkSearch,
+  ShortLinkStatistics,
 } from '../shared/types/general';
 import { environment } from '../environments/environment';
 
@@ -26,6 +27,10 @@ export class UrlShortenerService {
       `${environment.apiUrl}/short-links`,
       { params },
     );
+  }
+
+  public statistics() {
+    return this.httpClient.get<ShortLinkStatistics>(`${environment.apiUrl}/short-links/statistics`);
   }
 
   public shorten(data: ShortenFormData) {

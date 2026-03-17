@@ -4,6 +4,7 @@ import com.mdevs.shortenly.dto.ShortLinkRecord;
 import com.mdevs.shortenly.dto.ShortLinkRequest;
 import com.mdevs.shortenly.dto.ShortLinkResult;
 import com.mdevs.shortenly.dto.ShortLinkSearch;
+import com.mdevs.shortenly.dto.ShortLinkStatistics;
 import com.mdevs.shortenly.entity.ExpiryType;
 import com.mdevs.shortenly.entity.ShortLink;
 import com.mdevs.shortenly.exception.ShortLinkCannotExpireException;
@@ -36,6 +37,10 @@ public class ShortLinkService {
 
     @Value("${app.base-url}")
     private String baseUrl;
+
+    public ShortLinkStatistics getStatistics() {
+        return shortLinkRepository.getStatistics();
+    }
 
     public Page<ShortLinkRecord> searchLinks(ShortLinkSearch search, Pageable pageable) {
         Map<String, Object> params = new HashMap<>();
