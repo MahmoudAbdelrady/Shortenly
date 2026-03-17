@@ -14,12 +14,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/short-links")
 @RequiredArgsConstructor
 public class ShortLinkController {
 
     private final ShortLinkService shortLinkService;
+
+    @GetMapping("/{code}/redirect")
+    public ResponseEntity<Void> redirect(@PathVariable String code) {
+        String originalUrl = shortLinkService.getOriginalUrl(code);
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(originalUrl))
+                .build();
+    }
 
     @GetMapping("/statistics")
     public ResponseEntity<ShortLinkStatistics> statistics() {
