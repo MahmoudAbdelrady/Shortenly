@@ -1,0 +1,65 @@
+@use '../../shared/styles/colors' as *;
+@use '../../shared/styles/mixins' as *;
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  @include flex-col(10px);
+  align-items: flex-end;
+}
+
+.toast {
+  @include flex-row(10px);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  max-width: 360px;
+  animation: toast-in 250ms ease both;
+  backdrop-filter: blur(12px);
+
+  &.error {
+    background: rgba($error-dark, 0.15);
+    border: 1px solid rgba($error-dark, 0.3);
+    color: $error;
+  }
+
+  &.success {
+    background: rgba($success-dark, 0.15);
+    border: 1px solid rgba($success-dark, 0.3);
+    color: $success;
+  }
+}
+
+.toast-message {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.toast-dismiss {
+  @include flex-center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+  color: inherit;
+  opacity: 0.6;
+  @include transition-default(150ms);
+
+  &:hover {
+    opacity: 1;
+  }
+}

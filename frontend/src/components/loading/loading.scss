@@ -1,0 +1,40 @@
+@use '../../shared/styles/colors' as *;
+@use '../../shared/styles/mixins' as *;
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container {
+  @include flex-center;
+
+  &.md {
+    padding: 48px 0;
+  }
+
+  &.sm {
+    padding: 0;
+  }
+}
+
+.spinner {
+  border-style: solid;
+  border-color: rgba($white, 0.1);
+  border-top-color: $violet-400;
+  border-radius: 50%;
+  animation: spin 600ms linear infinite;
+
+  .md & {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+  }
+
+  .sm & {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+  }
+}

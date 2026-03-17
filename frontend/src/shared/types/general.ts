@@ -6,6 +6,54 @@ export interface DropdownOption {
   value: string;
 }
 
+export interface ShortenFormData {
+  url: string;
+  expiryType: string;
+}
+
+export interface ShortLinkResult {
+  shortUrl: string;
+  originalUrl: string;
+  expiryType: string;
+  expiresAt: string;
+}
+
+export interface ShortLinkSearch {
+  url?: string;
+  isActive?: boolean;
+  page?: number;
+  size?: number;
+}
+
+export interface PageObj {
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface PageableResponse<T> {
+  content: T[];
+  page: PageObj;
+}
+
+export interface ShortLinkRecord {
+  id: string;
+  shortUrl: string;
+  originalUrl: string;
+  expiryType: string;
+  createdAt: string;
+  expiresAt: string;
+  clicks: number;
+  isExpired: boolean;
+}
+
+export interface ShortLinkStatistics {
+  totalLinks: number;
+  activeLinks: number;
+  disabledLinks: number;
+}
+
 export const expiryDurationOptions: DropdownOption[] = [
   { icon: Ticket, label: 'One time', value: 'ONE_TIME' },
   { icon: InfinityIcon, label: 'Never expires', value: 'NEVER_EXPIRES' },

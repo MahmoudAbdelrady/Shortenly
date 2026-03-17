@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, linkedSignal, output, signal } from '@angular/core';
 import {
   Ban,
   Check,
@@ -12,7 +12,9 @@ import {
   Search,
   TriangleAlert,
 } from 'lucide-angular';
-import { expiryDurationOptions } from '../../shared/types/general';
+import { expiryDurationOptions, ShortLinkRecord } from '../../shared/types/general';
+import { UrlShortenerService } from '../../service/url-shortener';
+import { ToastService } from '../../service/toast';
 
 @Component({
   selector: 'url-item',
@@ -33,33 +35,39 @@ export class UrlItem {
   protected readonly AlertTriangleIcon = TriangleAlert;
   protected readonly expiryDurationOptions = expiryDurationOptions;
 
-  public isActive = input.required<boolean>();
-  public shortUrl = input.required<string>();
-  public originalUrl = input.required<string>();
-  public clicks = input.required<number>();
-  public urlType = input.required<string>();
-  public createdAt = input.required<string>();
-  public expiresAt = input.required<string>();
+  public linkInput = input.required<ShortLinkRecord>({ alias: 'link' });
+  public link = linkedSignal(() => this.linkInput());
+  public deactivated = output<ShortLinkRecord>();
 
+  private readonly urlShortenerService = inject(UrlShortenerService);
+  private readonly toastService = inject(ToastService);
   protected copied = signal(false);
-  protected expireConfirmOpen = signal(false);
+  protected deactivateConfirmOpen = signal(false);
 
   protected async onCopyClick(event: Event) {
     event.preventDefault();
     this.copied.set(true);
     setTimeout(() => this.copied.set(false), 2000);
-    await navigator.clipboard.writeText(this.shortUrl());
+    await navigator.clipboard.writeText(this.link().shortUrl);
   }
 
-  protected onExpireClick(event: Event) {
+  protected onDeactivateClick(event: Event) {
     event.preventDefault();
-    this.expireConfirmOpen.set(true);
+    this.deactivateConfirmOpen.set(true);
   }
 
-  protected onExpireAction(expire: boolean) {
-    this.expireConfirmOpen.set(false);
-    if (expire) {
-      // Todo: api call to expire the link
+  protected onDeactivateAction(deactivate: boolean) {
+    this.deactivateConfirmOpen.set(false);
+    if (deactivate) {
+      this.urlShortenerService.deactivate(this.link().id).subscribe({
+        next: (result) => {
+          this.link.set(result);
+          this.deactivated.emit(result);
+        },
+        error: (error) => {
+          this.toastService.show(error.error?.message ?? 'Failed to deactivate link');
+        },
+      });
     }
   }
 }

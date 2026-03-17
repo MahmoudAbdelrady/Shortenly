@@ -4,8 +4,10 @@ import com.mdevs.shortenly.dto.ShortLinkRecord;
 import com.mdevs.shortenly.dto.ShortLinkRequest;
 import com.mdevs.shortenly.dto.ShortLinkResult;
 import com.mdevs.shortenly.dto.ShortLinkSearch;
+import com.mdevs.shortenly.dto.ShortLinkStatistics;
 import com.mdevs.shortenly.entity.ExpiryType;
 import com.mdevs.shortenly.entity.ShortLink;
+import com.mdevs.shortenly.exception.ShortLinkCannotExpireException;
 import com.mdevs.shortenly.exception.ShortLinkExpiredException;
 import com.mdevs.shortenly.exception.ShortLinkNotFoundException;
 import com.mdevs.shortenly.repository.ShortLinkRepository;
@@ -36,6 +38,10 @@ public class ShortLinkService {
     @Value("${app.base-url}")
     private String baseUrl;
 
+    public ShortLinkStatistics getStatistics() {
+        return shortLinkRepository.getStatistics();
+    }
+
     public Page<ShortLinkRecord> searchLinks(ShortLinkSearch search, Pageable pageable) {
         Map<String, Object> params = new HashMap<>();
         String queryBody = buildSearchQuery(search, params);
@@ -52,6 +58,7 @@ public class ShortLinkService {
         Page<ShortLink> page = new PageImpl<>(dataQuery.getResultList(), pageable, total);
 
         return page.map(link -> new ShortLinkRecord(
+                link.getUuid(),
                 link.getOriginalUrl(),
                 baseUrl + link.getCode(),
                 link.getClicks(),
@@ -94,6 +101,32 @@ public class ShortLinkService {
         shortLinkRepository.save(shortLink);
 
         return shortLink.getOriginalUrl();
+    }
+
+    public ShortLinkRecord deactivate(String uuid) {
+        ShortLink link = shortLinkRepository.findByUuid(uuid).orElseThrow(() -> new ShortLinkNotFoundException(uuid));
+
+        if (link.getExpiryType().equals(ExpiryType.NEVER_EXPIRES)) {
+            throw new ShortLinkCannotExpireException("Cannot expire a link with NEVER_EXPIRES type");
+        }
+
+        if (link.isExpired()) {
+            throw new ShortLinkCannotExpireException("Link is already expired");
+        }
+
+        link.setExpiresAt(LocalDateTime.now().minusYears(1));
+        shortLinkRepository.save(link);
+
+        return new ShortLinkRecord(
+                link.getUuid(),
+                link.getOriginalUrl(),
+                baseUrl + link.getCode(),
+                link.getClicks(),
+                formatDateTime(link.getCreatedAt()),
+                link.getExpiryType().getValue(),
+                formatDateTime(link.getExpiresAt()),
+                link.isExpired()
+        );
     }
 
     private String buildSearchQuery(ShortLinkSearch search, Map<String, Object> params) {

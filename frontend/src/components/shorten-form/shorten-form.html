@@ -6,12 +6,12 @@
       <input
         type="text"
         placeholder="https://example.com/very/long/url/that/needs/shortening"
-        formControlName="longUrl"
+        formControlName="url"
       />
     </div>
     <form-error
-      [field]="urlShortenForm.controls.longUrl"
-      [fieldName]="'longUrl'"
+      [field]="urlShortenForm.controls.url"
+      [fieldName]="'url'"
       [errorMessages]="{ required: 'URL is required', invalidUrl: 'Enter a valid URL' }"
     />
   </div>
@@ -19,18 +19,23 @@
     <span>Expiry duration</span>
     <custom-dropdown
       [items]="expiryDurationOptions"
-      [fieldValue]="urlShortenForm.value.expiryDuration ?? ''"
-      (valueChange)="onExpiryDurationChange($event)"
+      [fieldValue]="urlShortenForm.value.expiryType ?? ''"
+      (valueChange)="onExpiryTypeChange($event)"
     />
     <form-error
-      [field]="urlShortenForm.controls.expiryDuration"
-      [fieldName]="'expiryDuration'"
+      [field]="urlShortenForm.controls.expiryType"
+      [fieldName]="'expiryType'"
       [errorMessages]="{ required: 'Expiry duration is required' }"
     />
   </div>
-  <button type="submit">
-    <lucide-icon [img]="ZapIcon" [size]="16"></lucide-icon>
-    Shorten URL
-    <lucide-icon [img]="ArrowRightIcon" [size]="16"></lucide-icon>
+  <button type="submit" [disabled]="isLoading()">
+    @if (isLoading()) {
+      <loading size="sm" />
+      Shortening...
+    } @else {
+      <lucide-icon [img]="ZapIcon" [size]="16"></lucide-icon>
+      Shorten URL
+      <lucide-icon [img]="ArrowRightIcon" [size]="16"></lucide-icon>
+    }
   </button>
 </form>
