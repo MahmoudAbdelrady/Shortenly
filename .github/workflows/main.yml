@@ -84,7 +84,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Run Trivy (LOW, MEDIUM, HIGH)
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           scan-type: fs
           scan-ref: .
@@ -100,7 +100,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Run Trivy (CRITICAL)
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           scan-type: fs
           scan-ref: .
