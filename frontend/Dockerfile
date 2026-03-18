@@ -7,6 +7,7 @@ COPY . .
 RUN pnpm build
 
 FROM node:22-alpine
+RUN apk update && apk upgrade --no-cache
 WORKDIR /app
 COPY --from=build /app/dist/shortenly/ ./
 EXPOSE 4000
