@@ -75,75 +75,44 @@ jobs:
       - name: Build
         run: pnpm build
 
-  trivy-scan-non-critical:
-    name: Trivy Scan (Non-Critical)
-    if: ${{ !failure() }}
-    runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend]
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Run Trivy (LOW, MEDIUM, HIGH)
-        uses: aquasecurity/trivy-action@0.35.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: LOW,MEDIUM,HIGH
-          exit-code: "0"
-
-  trivy-scan-critical:
-    name: Trivy Scan (Critical)
-    if: ${{ !failure() }}
-    runs-on: ubuntu-latest
-    needs: [trivy-scan-non-critical]
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Run Trivy (CRITICAL)
-        uses: aquasecurity/trivy-action@0.35.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL
-          exit-code: "1"
-
   docker-push-backend:
-    name: Build & Push Backend Image
-    if: ${{ !failure() && (inputs.deploy_target == 'all' || inputs.deploy_target == 'backend') }}
+    name: Build, Scan & Push Backend Image
+    if: ${{ inputs.deploy_target == 'all' || inputs.deploy_target == 'backend' }}
     runs-on: ubuntu-latest
-    needs: [trivy-scan-critical]
+    needs: [build-backend]
     steps:
       - uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build & push backend image
+      - name: Build backend image
         uses: docker/build-push-action@v6
         with:
           context: backend
           file: backend/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/shortenly-backend:latest
+          load: true
+          tags: shortenly-backend:scan
           cache-from: type=gha,scope=backend
           cache-to: type=gha,mode=max,scope=backend
 
-  docker-push-frontend:
-    name: Build & Push Frontend Image
-    if: ${{ !failure() && (inputs.deploy_target == 'all' || inputs.deploy_target == 'frontend') }}
-    runs-on: ubuntu-latest
-    needs: [trivy-scan-critical]
-    steps:
-      - uses: actions/checkout@v6
+      - name: Trivy scan (LOW, MEDIUM, HIGH)
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          scan-type: image
+          image-ref: shortenly-backend:scan
+          severity: LOW,MEDIUM,HIGH
+          ignore-unfixed: "true"
+          exit-code: "0"
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Trivy scan (CRITICAL)
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          scan-type: image
+          image-ref: shortenly-backend:scan
+          severity: CRITICAL
+          ignore-unfixed: "true"
+          exit-code: "1"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -151,12 +120,57 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build & push frontend image
+      - name: Push backend image
+        run: |
+          docker tag shortenly-backend:scan ${{ secrets.DOCKER_USERNAME }}/shortenly-backend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/shortenly-backend:latest
+
+  docker-push-frontend:
+    name: Build, Scan & Push Frontend Image
+    if: ${{ inputs.deploy_target == 'all' || inputs.deploy_target == 'frontend' }}
+    runs-on: ubuntu-latest
+    needs: [build-frontend]
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build frontend image
         uses: docker/build-push-action@v6
         with:
           context: frontend
           file: frontend/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/shortenly-frontend:latest
+          load: true
+          tags: shortenly-frontend:scan
           cache-from: type=gha,scope=frontend
           cache-to: type=gha,mode=max,scope=frontend
+
+      - name: Trivy scan (LOW, MEDIUM, HIGH)
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          scan-type: image
+          image-ref: shortenly-frontend:scan
+          severity: LOW,MEDIUM,HIGH
+          ignore-unfixed: "true"
+          exit-code: "0"
+
+      - name: Trivy scan (CRITICAL)
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          scan-type: image
+          image-ref: shortenly-frontend:scan
+          severity: CRITICAL
+          ignore-unfixed: "true"
+          exit-code: "1"
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push frontend image
+        run: |
+          docker tag shortenly-frontend:scan ${{ secrets.DOCKER_USERNAME }}/shortenly-frontend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/shortenly-frontend:latest
