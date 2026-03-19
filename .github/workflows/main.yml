@@ -93,6 +93,7 @@ jobs:
           file: backend/Dockerfile
           load: true
           tags: shortenly-backend:scan
+          build-args: CACHE_BUST=${{ github.run_id }}
           cache-from: type=gha,scope=backend
           cache-to: type=gha,mode=max,scope=backend
 
@@ -143,6 +144,7 @@ jobs:
           file: frontend/Dockerfile
           load: true
           tags: shortenly-frontend:scan
+          build-args: CACHE_BUST=${{ github.run_id }}
           cache-from: type=gha,scope=frontend
           cache-to: type=gha,mode=max,scope=frontend
 

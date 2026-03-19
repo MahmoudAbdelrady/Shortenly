@@ -17,6 +17,9 @@ RUN ./mvnw -B clean package -DskipTests
 
 FROM eclipse-temurin:25-jre-alpine
 
+# Cache-bust argument to force fresh OS patches on each build
+ARG CACHE_BUST
+
 # Apply latest OS security patches
 RUN apk update && apk upgrade --no-cache
 
