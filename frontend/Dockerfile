@@ -1,4 +1,4 @@
-FROM node:22-alpine AS build
+FROM node:25-alpine AS build
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ COPY . .
 # Build the Angular SSR application
 RUN pnpm build
 
-FROM node:22-alpine
+FROM node:25-alpine
 
 # Apply latest OS security patches
 RUN apk update && apk upgrade --no-cache
