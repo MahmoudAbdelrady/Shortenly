@@ -2,8 +2,8 @@ FROM node:25-alpine AS build
 
 WORKDIR /app
 
-# Enable pnpm via corepack
-RUN corepack enable && corepack prepare pnpm@10 --activate
+# Install pnpm
+RUN npm install -g pnpm@10
 
 # Copy dependency files for caching
 COPY package.json pnpm-lock.yaml ./
