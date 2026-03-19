@@ -41,12 +41,7 @@ public class ShortLinkService {
     private String baseUrl;
 
     public ShortLinkStatistics getStatistics() {
-        try {
-            return shortLinkRepository.getStatistics();
-        } catch (Exception e) {
-            log.error("Error fetching statistics", e);
-            throw new RuntimeException(e);
-        }
+        return shortLinkRepository.getStatistics();
     }
 
     public Page<ShortLinkRecord> searchLinks(ShortLinkSearch search, Pageable pageable) {
