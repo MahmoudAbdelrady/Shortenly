@@ -14,6 +14,7 @@ import com.mdevs.shortenly.repository.ShortLinkRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ShortLinkService {
@@ -39,7 +41,12 @@ public class ShortLinkService {
     private String baseUrl;
 
     public ShortLinkStatistics getStatistics() {
-        return shortLinkRepository.getStatistics();
+        try {
+            return shortLinkRepository.getStatistics();
+        } catch (Exception e) {
+            log.error("Error fetching statistics", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public Page<ShortLinkRecord> searchLinks(ShortLinkSearch search, Pageable pageable) {
