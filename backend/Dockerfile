@@ -28,7 +28,7 @@ WORKDIR /app
 # Copy the built JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-EXPOSE 8080
+EXPOSE 8081
 
 # Allow JVM options to be passed at runtime (e.g. Spring profile)
 ENV JAVA_OPTS=""
