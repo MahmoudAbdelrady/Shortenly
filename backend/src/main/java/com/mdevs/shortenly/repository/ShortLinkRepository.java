@@ -16,8 +16,8 @@ public interface ShortLinkRepository extends JpaRepository<ShortLink, Long> {
     @Query("""
         SELECT new com.mdevs.shortenly.dto.ShortLinkStatistics(
             COUNT(s),
-            SUM(CASE WHEN s.expiresAt IS NULL OR s.expiresAt >= CURRENT_TIMESTAMP THEN 1L ELSE 0L END),
-            SUM(CASE WHEN s.expiresAt IS NOT NULL AND s.expiresAt < CURRENT_TIMESTAMP THEN 1L ELSE 0L END)
+            COALESCE(SUM(CASE WHEN s.expiresAt IS NULL OR s.expiresAt >= CURRENT_TIMESTAMP THEN 1L ELSE 0L END), 0L),
+            COALESCE(SUM(CASE WHEN s.expiresAt IS NOT NULL AND s.expiresAt < CURRENT_TIMESTAMP THEN 1L ELSE 0L END), 0L)
         ) FROM ShortLink s
         """)
     ShortLinkStatistics getStatistics();
