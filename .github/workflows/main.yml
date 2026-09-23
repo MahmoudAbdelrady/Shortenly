@@ -80,6 +80,8 @@ jobs:
     if: ${{ inputs.deploy_target == 'all' || inputs.deploy_target == 'backend' }}
     runs-on: ubuntu-latest
     needs: [build-backend]
+    outputs:
+      pushed: ${{ steps.push.outputs.pushed }}
     steps:
       - uses: actions/checkout@v6
 
@@ -122,15 +124,21 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push backend image
+        id: push
         run: |
           docker tag shortenly-backend:scan ${{ secrets.DOCKER_USERNAME }}/shortenly-backend:latest
+          docker tag shortenly-backend:scan ${{ secrets.DOCKER_USERNAME }}/shortenly-backend:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/shortenly-backend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/shortenly-backend:${{ github.sha }}
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
 
   docker-push-frontend:
     name: Build, Scan & Push Frontend Image
     if: ${{ inputs.deploy_target == 'all' || inputs.deploy_target == 'frontend' }}
     runs-on: ubuntu-latest
     needs: [build-frontend]
+    outputs:
+      pushed: ${{ steps.push.outputs.pushed }}
     steps:
       - uses: actions/checkout@v6
 
@@ -173,6 +181,97 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push frontend image
+        id: push
         run: |
           docker tag shortenly-frontend:scan ${{ secrets.DOCKER_USERNAME }}/shortenly-frontend:latest
+          docker tag shortenly-frontend:scan ${{ secrets.DOCKER_USERNAME }}/shortenly-frontend:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/shortenly-frontend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/shortenly-frontend:${{ github.sha }}
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: [docker-push-backend, docker-push-frontend]
+    if: ${{ always() && (needs.docker-push-backend.outputs.pushed == 'true' || needs.docker-push-frontend.outputs.pushed == 'true') }}
+    env:
+      DEPLOY_BACKEND: ${{ needs.docker-push-backend.outputs.pushed == 'true' }}
+      DEPLOY_FRONTEND: ${{ needs.docker-push-frontend.outputs.pushed == 'true' }}
+      DEPLOY_URL: ${{ vars.DEPLOY_URL }}
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      IMAGE_TAG: ${{ github.sha }}
+    steps:
+      - name: Resolve deploy targets
+        run: |
+          echo "Deploy backend:  $DEPLOY_BACKEND"
+          echo "Deploy frontend: $DEPLOY_FRONTEND"
+          echo "Image tag:       $IMAGE_TAG"
+
+      - name: Update image version env vars
+        run: |
+          set -euo pipefail
+
+          payload=$(jq -nc \
+            --arg tag "$IMAGE_TAG" \
+            --argjson backend "$DEPLOY_BACKEND" \
+            --argjson frontend "$DEPLOY_FRONTEND" \
+            '{
+               data: [
+                 (if $backend then {key: "SHORTENLY_BACKEND_VERSION", value: $tag} else empty end),
+                 (if $frontend then {key: "SHORTENLY_FRONTEND_VERSION", value: $tag} else empty end)
+               ]
+             }')
+
+          echo "Request body: $payload"
+
+          status=$(curl -sS -o response.txt -w '%{http_code}' \
+            -X PATCH "${DEPLOY_URL}/envs/bulk" \
+            -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$payload")
+
+          echo "HTTP $status"
+          cat response.txt
+
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::Failed to update env vars (HTTP $status)"
+            exit 1
+          fi
+
+      - name: Start backend application
+        if: ${{ env.DEPLOY_BACKEND == 'true' }}
+        env:
+          APP_ID: ${{ vars.BACKEND_APP_ID }}
+        run: |
+          set -euo pipefail
+
+          status=$(curl -sS -o response.txt -w '%{http_code}' \
+            -X POST "${DEPLOY_URL}/applications/${APP_ID}/start?latest=true" \
+            -H "Authorization: Bearer ${DEPLOY_TOKEN}")
+
+          echo "HTTP $status"
+          cat response.txt
+
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::Failed to start backend application (HTTP $status)"
+            exit 1
+          fi
+
+      - name: Start frontend application
+        if: ${{ env.DEPLOY_FRONTEND == 'true' }}
+        env:
+          APP_ID: ${{ vars.FRONTEND_APP_ID }}
+        run: |
+          set -euo pipefail
+
+          status=$(curl -sS -o response.txt -w '%{http_code}' \
+            -X POST "${DEPLOY_URL}/applications/${APP_ID}/start?latest=true" \
+            -H "Authorization: Bearer ${DEPLOY_TOKEN}")
+
+          echo "HTTP $status"
+          cat response.txt
+
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::Failed to start frontend application (HTTP $status)"
+            exit 1
+          fi
