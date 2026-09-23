@@ -45,7 +45,7 @@ services:
       backend:
         condition: service_healthy
     environment:
-      NG_ALLOWED_HOSTS: ${FRONTEND_URL}
+      NG_ALLOWED_HOSTS: ${FRONTEND_ALLOWED_HOSTS}
     ports:
       - "4200:4000"
     healthcheck:
