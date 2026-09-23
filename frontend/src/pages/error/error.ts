@@ -1,11 +1,18 @@
 import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AlertTriangle, Home, Link2Off, LucideAngularModule, LucideIconData, ShieldAlert } from 'lucide-angular';
+import {
+  LucideHouse as Home,
+  LucideDynamicIcon,
+  LucideIconInput,
+  LucideLink2Off as Link2Off,
+  LucideShieldAlert as ShieldAlert,
+  LucideTriangleAlert as AlertTriangle,
+} from '@lucide/angular';
 import { map } from 'rxjs';
 
 interface ErrorInfo {
-  icon: LucideIconData;
+  icon: LucideIconInput;
   title: string;
   message: string;
 }
@@ -31,7 +38,7 @@ const defaultError: ErrorInfo = {
 
 @Component({
   selector: 'app-error',
-  imports: [LucideAngularModule, RouterLink],
+  imports: [LucideDynamicIcon, RouterLink],
   templateUrl: 'error.html',
   styleUrl: 'error.scss',
 })
@@ -39,9 +46,7 @@ export class ErrorComponent {
   protected readonly HomeIcon = Home;
 
   private route = inject(ActivatedRoute);
-  private reason = toSignal(
-    this.route.queryParamMap.pipe(map((params) => params.get('reason'))),
-  );
+  private reason = toSignal(this.route.queryParamMap.pipe(map((params) => params.get('reason'))));
 
   protected errorInfo = computed<ErrorInfo>(() => {
     const reason = this.reason();

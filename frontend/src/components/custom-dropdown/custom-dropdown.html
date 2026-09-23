@@ -7,18 +7,18 @@
   >
     <div class="trigger-content">
       @if (selectedOption().icon) {
-        <lucide-icon [img]="selectedOption().icon" [size]="16"></lucide-icon>
+        <svg [lucideIcon]="selectedOption().icon ?? null" [size]="16"></svg>
       } @else if (fieldValueDefaultIcon()) {
-        <lucide-icon [img]="fieldValueDefaultIcon()" [size]="16"></lucide-icon>
+        <svg [lucideIcon]="fieldValueDefaultIcon() ?? null" [size]="16"></svg>
       }
       <span>{{ selectedOption().label }}</span>
     </div>
-    <lucide-icon
-      [img]="ChevronDownIcon"
+    <svg
+      [lucideIcon]="ChevronDownIcon"
       [size]="16"
       class="chevron"
       [class.open]="dropdownOpen()"
-    ></lucide-icon>
+    ></svg>
   </button>
   @if (dropdownOpen()) {
     <ul
@@ -30,7 +30,7 @@
       @for (option of items(); track option.value) {
         <li [cdkOption]="option.value" class="dropdown-option">
           @if (option.icon) {
-            <lucide-icon [img]="option.icon" [size]="16"></lucide-icon>
+            <svg [lucideIcon]="option.icon" [size]="16"></svg>
           }
           <span>{{ option.label }}</span>
         </li>

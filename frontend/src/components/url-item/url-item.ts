@@ -1,24 +1,24 @@
 import { Component, inject, input, linkedSignal, output, signal } from '@angular/core';
 import {
-  Ban,
-  Check,
-  Clock4,
-  Copy,
-  ExternalLink,
-  Funnel,
-  History,
-  LucideAngularModule,
-  MousePointerClick,
-  Search,
-  TriangleAlert,
-} from 'lucide-angular';
+  LucideBan as Ban,
+  LucideCheck as Check,
+  LucideClock4 as Clock4,
+  LucideCopy as Copy,
+  LucideExternalLink as ExternalLink,
+  LucideFunnel as Funnel,
+  LucideDynamicIcon,
+  LucideMousePointerClick as MousePointerClick,
+  LucideRotateCcwClock as History,
+  LucideSearch as Search,
+  LucideTriangleAlert as TriangleAlert,
+} from '@lucide/angular';
 import { expiryDurationOptions, ShortLinkRecord } from '../../shared/types/general';
 import { UrlShortenerService } from '../../service/url-shortener';
 import { ToastService } from '../../service/toast';
 
 @Component({
   selector: 'url-item',
-  imports: [LucideAngularModule],
+  imports: [LucideDynamicIcon],
   templateUrl: 'url-item.html',
   styleUrl: 'url-item.scss',
 })

@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { History, House, LucideAngularModule, LucideIconData } from 'lucide-angular';
+import {
+  LucideHouse as House,
+  LucideDynamicIcon,
+  LucideIconInput,
+  LucideRotateCcwClock as History,
+} from '@lucide/angular';
 
 interface AppTab {
   label: string;
-  icon: LucideIconData;
+  icon: LucideIconInput;
   route: string;
 }
 
@@ -12,7 +17,7 @@ interface AppTab {
   selector: 'app-layout',
   templateUrl: 'app-layout.html',
   styleUrl: 'app-layout.scss',
-  imports: [RouterOutlet, RouterLink, LucideAngularModule, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, LucideDynamicIcon, RouterLinkActive],
 })
 export class AppLayoutComponent {
   protected readonly appTabs: AppTab[] = [

@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { LucideAngularModule, Sparkles } from 'lucide-angular';
+import { LucideDynamicIcon, LucideSparkles as Sparkles } from '@lucide/angular';
 import { ShortenForm, ShortenResult } from '../../components';
 import { UrlShortenerService } from '../../service/url-shortener';
 import { ToastService } from '../../service/toast';
@@ -8,7 +8,7 @@ import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  imports: [LucideAngularModule, ShortenForm, ShortenResult],
+  imports: [LucideDynamicIcon, ShortenForm, ShortenResult],
   templateUrl: 'home.html',
   styleUrl: 'home.scss',
 })
@@ -21,16 +21,17 @@ export class HomeComponent {
 
   protected onShorten(data: ShortenFormData) {
     this.isShortening.set(true);
-    this.urlShortenerService.shorten(data).pipe(
-      finalize(() => this.isShortening.set(false))
-    ).subscribe({
-      next: (result) => {
-        this.shortenResult.set(result);
-      },
-      error: (error) => {
-        this.toastService.show(error.error?.message ?? 'Failed to shorten URL');
-      },
-    });
+    this.urlShortenerService
+      .shorten(data)
+      .pipe(finalize(() => this.isShortening.set(false)))
+      .subscribe({
+        next: (result) => {
+          this.shortenResult.set(result);
+        },
+        error: (error) => {
+          this.toastService.show(error.error?.message ?? 'Failed to shorten URL');
+        },
+      });
   }
 
   protected onShortenAnother() {

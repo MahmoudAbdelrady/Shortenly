@@ -1,9 +1,13 @@
 import { Component, computed, input, output, signal } from '@angular/core';
-import { ChevronLeft, ChevronRight, LucideAngularModule } from 'lucide-angular';
+import {
+  LucideChevronLeft as ChevronLeft,
+  LucideChevronRight as ChevronRight,
+  LucideDynamicIcon,
+} from '@lucide/angular';
 
 @Component({
   selector: 'paginator',
-  imports: [LucideAngularModule],
+  imports: [LucideDynamicIcon],
   templateUrl: 'paginator.html',
   styleUrl: 'paginator.scss',
 })

@@ -1,5 +1,11 @@
 import { Component, inject, output, signal } from '@angular/core';
-import { Funnel, History, LucideAngularModule, RotateCcw, Search } from 'lucide-angular';
+import {
+  LucideFunnel as Funnel,
+  LucideDynamicIcon,
+  LucideRotateCcw as RotateCcw,
+  LucideRotateCcwClock as History,
+  LucideSearch as Search,
+} from '@lucide/angular';
 import { CustomDropdown } from '../../components/custom-dropdown/custom-dropdown';
 import { UrlItem } from '../../components/url-item/url-item';
 import { Paginator } from '../../components/paginator/paginator';
@@ -21,7 +27,7 @@ type LinkStatus = (typeof LINK_STATUS)[keyof typeof LINK_STATUS];
 
 @Component({
   selector: 'app-history',
-  imports: [LucideAngularModule, CustomDropdown, UrlItem, Paginator, ReactiveFormsModule, Loading],
+  imports: [LucideDynamicIcon, CustomDropdown, UrlItem, Paginator, ReactiveFormsModule, Loading],
   templateUrl: 'history.html',
   styleUrl: 'history.scss',
 })
