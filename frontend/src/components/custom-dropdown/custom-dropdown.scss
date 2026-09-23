@@ -37,7 +37,7 @@
 .trigger-content {
   @include flex-row(8px);
 
-  lucide-icon {
+  svg {
     color: $violet-400;
   }
 }
@@ -78,7 +78,7 @@
   box-sizing: border-box;
   @include transition-default(150ms);
 
-  lucide-icon {
+  svg {
     color: rgba($violet-400, 0.7);
     flex-shrink: 0;
   }
@@ -91,7 +91,7 @@
     color: $violet-400;
     background: rgba($violet-600, 0.15);
 
-    lucide-icon {
+    svg {
       color: $violet-400;
     }
   }

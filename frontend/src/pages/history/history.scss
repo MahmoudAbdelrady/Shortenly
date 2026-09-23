@@ -40,10 +40,11 @@
   @include flex-row(12px);
   margin-bottom: 8px;
 
-  lucide-icon {
-    @include flex-center;
+  svg {
+    box-sizing: border-box;
     width: 36px;
     height: 36px;
+    padding: 8px;
     border-radius: 12px;
     background: linear-gradient(135deg, rgba($violet-600, 0.3), rgba($indigo-600, 0.3));
     border: 1px solid rgba($violet-400, 0.2);
@@ -125,7 +126,7 @@
   position: relative;
   flex: 1;
 
-  lucide-icon {
+  svg {
     position: absolute;
     left: 12px;
     top: 50%;
@@ -215,7 +216,7 @@
   background: rgba($white, 0.02);
   border: 1px solid rgba($white, 0.06);
 
-  lucide-icon {
+  svg {
     color: rgba($white, 0.2);
   }
 

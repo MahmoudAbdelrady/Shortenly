@@ -97,7 +97,7 @@
   margin-bottom: 12px;
   cursor: pointer;
 
-  lucide-icon {
+  svg {
     opacity: 0;
     flex-shrink: 0;
     @include transition-default;
@@ -111,7 +111,7 @@
     }
   }
 
-  .url-item:hover & lucide-icon {
+  .url-item:hover & svg {
     opacity: 1;
   }
 }
