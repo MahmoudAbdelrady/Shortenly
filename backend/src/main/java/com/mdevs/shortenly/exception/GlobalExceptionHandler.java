@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ShortLinkExpiredException.class)
     public ResponseEntity<Void> handleExpired(ShortLinkExpiredException ex) {
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(frontendUrl + "error?reason=expired"))
+                .location(URI.create(frontendUrl + "/error?reason=expired"))
                 .build();
     }
 
