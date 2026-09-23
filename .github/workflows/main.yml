@@ -1,4 +1,5 @@
 name: Main CI/CD
+run-name: Deploy ${{ inputs.deploy_target }} (${{ github.sha }})
 
 on:
   workflow_dispatch:
