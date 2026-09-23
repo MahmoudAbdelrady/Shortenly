@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.mdevs</groupId>
 	<artifactId>shortenly</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>shortenly</name>
 	<description>Url Shortener project</description>
 	<url/>
