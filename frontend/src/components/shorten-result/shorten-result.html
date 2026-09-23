@@ -1,7 +1,7 @@
 <div class="shorten-result">
   <div class="header">
     <div class="h-icon">
-      <lucide-icon [img]="CheckIcon" [size]="20"></lucide-icon>
+      <svg [lucideIcon]="CheckIcon" [size]="20"></svg>
     </div>
     <div class="h-info">
       <h5>URL Shortened Successfully!</h5>
@@ -20,10 +20,10 @@
           (click)="onCopyClick($event)"
         >
           @if (copied()) {
-            <lucide-icon [img]="CheckIcon" [size]="16"></lucide-icon>
+            <svg [lucideIcon]="CheckIcon" [size]="16"></svg>
             Copied!
           } @else {
-            <lucide-icon [img]="CopyIcon" [size]="16"></lucide-icon>
+            <svg [lucideIcon]="CopyIcon" [size]="16"></svg>
             Copy
           }
         </button>
@@ -38,7 +38,7 @@
     <div class="url-tags">
       <div class="tag-item">
         <span class="tag-icon"
-          ><lucide-icon [img]="resultData().expiryType.icon" [size]="12"></lucide-icon
+          ><svg [lucideIcon]="resultData().expiryType.icon ?? null" [size]="12"></svg
         ></span>
         <span class="tag-label">{{ resultData().expiryType.label }}</span>
       </div>

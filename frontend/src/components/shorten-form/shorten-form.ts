@@ -1,5 +1,10 @@
 import { Component, inject, input, output } from '@angular/core';
-import { ArrowRight, Link2, LucideAngularModule, Zap } from 'lucide-angular';
+import {
+  LucideArrowRight as ArrowRight,
+  LucideDynamicIcon,
+  LucideLink2 as Link2,
+  LucideZap as Zap,
+} from '@lucide/angular';
 import {
   AbstractControl,
   FormBuilder,
@@ -26,7 +31,7 @@ function urlValidator(control: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'shorten-form',
-  imports: [LucideAngularModule, CustomDropdown, FormError, Loading, ReactiveFormsModule],
+  imports: [LucideDynamicIcon, CustomDropdown, FormError, Loading, ReactiveFormsModule],
   templateUrl: 'shorten-form.html',
   styleUrl: 'shorten-form.scss',
 })

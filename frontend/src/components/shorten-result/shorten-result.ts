@@ -1,10 +1,15 @@
 import { Component, computed, input, output, signal } from '@angular/core';
-import { Check, Copy, Infinity, LucideAngularModule } from 'lucide-angular';
+import {
+  LucideCheck as Check,
+  LucideCopy as Copy,
+  LucideDynamicIcon,
+  LucideInfinity as Infinity,
+} from '@lucide/angular';
 import { expiryDurationOptions, ShortLinkResult } from '../../shared/types/general';
 
 @Component({
   selector: 'shorten-result',
-  imports: [LucideAngularModule],
+  imports: [LucideDynamicIcon],
   templateUrl: 'shorten-result.html',
   styleUrl: 'shorten-result.scss',
 })

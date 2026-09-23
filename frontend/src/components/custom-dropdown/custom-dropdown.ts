@@ -9,12 +9,16 @@ import {
   viewChild,
 } from '@angular/core';
 import { CdkListboxModule, ListboxValueChangeEvent } from '@angular/cdk/listbox';
-import { ChevronDown, LucideAngularModule, LucideIconData } from 'lucide-angular';
+import {
+  LucideChevronDown as ChevronDown,
+  LucideDynamicIcon,
+  LucideIconInput,
+} from '@lucide/angular';
 import { DropdownOption } from '../../shared/types/general';
 
 @Component({
   selector: 'custom-dropdown',
-  imports: [LucideAngularModule, CdkListboxModule],
+  imports: [LucideDynamicIcon, CdkListboxModule],
   templateUrl: './custom-dropdown.html',
   styleUrl: './custom-dropdown.scss',
 })
@@ -23,7 +27,7 @@ export class CustomDropdown {
 
   public items = input.required<DropdownOption[]>();
   public fieldValue = input.required<string>();
-  public fieldValueDefaultIcon = input<LucideIconData>();
+  public fieldValueDefaultIcon = input<LucideIconInput>();
   public valueChange = output<string>();
 
   protected readonly ChevronDownIcon = ChevronDown;

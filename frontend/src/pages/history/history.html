@@ -1,7 +1,7 @@
 <div class="history-container">
   <div class="header">
     <div class="title">
-      <lucide-icon [img]="HistoryIcon" [size]="20"></lucide-icon>
+      <svg [lucideIcon]="HistoryIcon" [size]="20"></svg>
       <h3>URL History</h3>
     </div>
     <p class="description">Track and manage all your shortened links</p>
@@ -26,7 +26,7 @@
   }
   <form [formGroup]="urlSearchForm" (ngSubmit)="onSubmit()" class="urls-search">
     <div class="search-input">
-      <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>
+      <svg [lucideIcon]="SearchIcon" [size]="16"></svg>
       <input type="text" placeholder="Search URLs..." formControlName="search" />
     </div>
     <div class="search-filter">
@@ -39,11 +39,11 @@
     </div>
     <div class="action-btns">
       <button type="submit" class="action-btn search-btn">
-        <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>
+        <svg [lucideIcon]="SearchIcon" [size]="16"></svg>
         Search
       </button>
       <button type="button" class="action-btn reset-btn" (click)="onReset()">
-        <lucide-icon [img]="ResetIcon" [size]="16"></lucide-icon>
+        <svg [lucideIcon]="ResetIcon" [size]="16"></svg>
         Reset
       </button>
     </div>
@@ -56,7 +56,7 @@
         <url-item [link]="shortLink" (deactivated)="onLinkDeactivated()" />
       } @empty {
         <div class="no-results">
-          <lucide-icon [img]="SearchIcon" [size]="16"></lucide-icon>
+          <svg [lucideIcon]="SearchIcon" [size]="16"></svg>
           <p>No results found</p>
         </div>
       }

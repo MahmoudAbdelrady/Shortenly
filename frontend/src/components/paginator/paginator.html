@@ -24,7 +24,7 @@
       (click)="goToPage(currentPage() - 1)"
       aria-label="Previous page"
     >
-      <lucide-icon [img]="PrevIcon" [size]="16"></lucide-icon>
+      <svg [lucideIcon]="PrevIcon" [size]="16"></svg>
       Prev
     </button>
     <button
@@ -34,7 +34,7 @@
       aria-label="Next page"
     >
       Next
-      <lucide-icon [img]="NextIcon" [size]="16"></lucide-icon>
+      <svg [lucideIcon]="NextIcon" [size]="16"></svg>
     </button>
   </div>
 </nav>

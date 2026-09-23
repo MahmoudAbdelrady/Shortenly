@@ -1,4 +1,4 @@
-FROM node:25-alpine AS build
+FROM node:24-alpine AS build
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ COPY . .
 # Build the Angular SSR application
 RUN pnpm build
 
-FROM node:25-alpine
+FROM node:24-alpine
 
 # Cache-bust argument to force fresh OS patches on each build
 ARG CACHE_BUST

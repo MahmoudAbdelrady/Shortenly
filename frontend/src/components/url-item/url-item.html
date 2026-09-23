@@ -5,23 +5,25 @@
       <div class="short-url-tag">{{ !link().isExpired ? 'Active' : 'Expired' }}</div>
     </div>
     <div class="original-url">
-      <a class="original-url-value" [href]="link().originalUrl" target="_blank">{{ link().originalUrl }}</a>
-      <lucide-icon [img]="ExternalLinkIcon" [size]="16"></lucide-icon>
+      <a class="original-url-value" [href]="link().originalUrl" target="_blank">{{
+        link().originalUrl
+      }}</a>
+      <svg [lucideIcon]="ExternalLinkIcon" [size]="16"></svg>
     </div>
     <div class="metadata">
       <div class="metadata-item">
-        <lucide-icon [img]="MousePointerClickIcon" [size]="16"></lucide-icon>
+        <svg [lucideIcon]="MousePointerClickIcon" [size]="16"></svg>
         <span class="metadata-label">{{ link().clicks }} clicks</span>
       </div>
       <div class="metadata-item">
-        <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
+        <svg [lucideIcon]="Clock4Icon" [size]="16"></svg>
         <span class="metadata-label">Created {{ link().createdAt }}</span>
       </div>
       <div class="metadata-item">
-        <lucide-icon
-          [img]="expiryDurationOptions.find(option => option.value === link().expiryType)?.icon"
+        <svg
+          [lucideIcon]="$safeNavigationMigration(expiryDurationOptions.find(option => option.value === link().expiryType)?.icon) ?? null"
           [size]="16"
-        ></lucide-icon>
+        ></svg>
         <span
           class="metadata-label"
           >{{ expiryDurationOptions.find(option => option.value === link().expiryType)?.label }}</span
@@ -29,7 +31,7 @@
       </div>
       @if (link().expiresAt) {
         <div class="metadata-item">
-          <lucide-icon [img]="Clock4Icon" [size]="16"></lucide-icon>
+          <svg [lucideIcon]="Clock4Icon" [size]="16"></svg>
           <span class="metadata-label"
             >{{ !link().isExpired ? 'Expires' : 'Expired' }} {{ link().expiresAt }}</span
           >
@@ -46,17 +48,17 @@
         (click)="onCopyClick($event)"
       >
         @if (copied()) {
-          <lucide-icon [img]="CheckIcon" [size]="16"></lucide-icon>
+          <svg [lucideIcon]="CheckIcon" [size]="16"></svg>
           Copied!
         } @else {
-          <lucide-icon [img]="CopyIcon" [size]="16"></lucide-icon>
+          <svg [lucideIcon]="CopyIcon" [size]="16"></svg>
           Copy
         }
       </button>
       @if (deactivateConfirmOpen()) {
         <div class="deactivate-confirm">
           <span class="deactivate-confirm-label">
-            <lucide-icon [img]="AlertTriangleIcon" [size]="14"></lucide-icon>
+            <svg [lucideIcon]="AlertTriangleIcon" [size]="14"></svg>
             Deactivate this link?
           </span>
           <button type="button" class="deactivate-confirm-yes" (click)="onDeactivateAction(true)">
@@ -68,7 +70,7 @@
         </div>
       } @else if (link().expiryType !== 'NEVER_EXPIRES') {
         <button type="button" class="action-btn ban-btn" (click)="onDeactivateClick($event)">
-          <lucide-icon [img]="BanIcon" [size]="16"></lucide-icon> Deactivate
+          <svg [lucideIcon]="BanIcon" [size]="16"></svg> Deactivate
         </button>
       }
     </div>

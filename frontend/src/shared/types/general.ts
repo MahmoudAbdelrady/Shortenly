@@ -1,7 +1,12 @@
-import { Clock, Infinity as InfinityIcon, LucideIconData, Ticket } from 'lucide-angular';
+import {
+  LucideClock as Clock,
+  LucideIconInput,
+  LucideInfinity as InfinityIcon,
+  LucideTicket as Ticket,
+} from '@lucide/angular';
 
 export interface DropdownOption {
-  icon?: LucideIconData;
+  icon?: LucideIconInput;
   label: string;
   value: string;
 }
